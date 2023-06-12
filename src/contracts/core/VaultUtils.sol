@@ -1,14 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.6.12;
+pragma solidity ^0.8.0;
 
-import "../libraries/math/SafeMath.sol";
-import "../libraries/token/IERC20.sol";
 import "./interfaces/IVault.sol";
 import "./interfaces/IVaultUtils.sol";
 
-import "../access/Governable.sol";
-import "./interface/IVaultUtils.sol";
+import "./Governable.sol";
 
 contract VaultUtils is IVaultUtils, Governable {
 
@@ -27,19 +24,19 @@ contract VaultUtils is IVaultUtils, Governable {
     uint256 public constant BASIS_POINTS_DIVISOR = 10000;
     uint256 public constant FUNDING_RATE_PRECISION = 1000000;
 
-    constructor(IVault _vault) public {
+    constructor(IVault _vault) {
         vault = _vault;
     }
 
-    function updateCumulativeFundingRate(address /* _collateralToken */, address /* _indexToken */) public override returns (bool) {
+    function updateCumulativeFundingRate(address /* _collateralToken */, address /* _indexToken */) public returns (bool) {
         return true;
     }
 
-    function validateIncreasePosition(address /* _account */, address /* _collateralToken */, address /* _indexToken */, uint256 /* _sizeDelta */, bool /* _isLong */) external override view {
+    function validateIncreasePosition(address /* _account */, address /* _collateralToken */, address /* _indexToken */, uint256 /* _sizeDelta */, bool /* _isLong */) external view {
         // no additional validations
     }
 
-    function validateDecreasePosition(address /* _account */, address /* _collateralToken */, address /* _indexToken */ , uint256 /* _collateralDelta */, uint256 /* _sizeDelta */, bool /* _isLong */, address /* _receiver */) external override view {
+    function validateDecreasePosition(address /* _account */, address /* _collateralToken */, address /* _indexToken */ , uint256 /* _collateralDelta */, uint256 /* _sizeDelta */, bool /* _isLong */, address /* _receiver */) external view {
         // no additional validations
     }
 
@@ -57,7 +54,7 @@ contract VaultUtils is IVaultUtils, Governable {
         return position;
     }
 
-    function validateLiquidation(address _account, address _collateralToken, address _indexToken, bool _isLong, bool _raise) public view override returns (uint256, uint256) {
+    function validateLiquidation(address _account, address _collateralToken, address _indexToken, bool _isLong, bool _raise) public view returns (uint256, uint256) {
         Position memory position = getPosition(_account, _collateralToken, _indexToken, _isLong);
         IVault _vault = vault;
 
@@ -94,17 +91,17 @@ contract VaultUtils is IVaultUtils, Governable {
         return (0, marginFees);
     }
 
-    function getEntryFundingRate(address _collateralToken, address /* _indexToken */, bool /* _isLong */) public override view returns (uint256) {
+    function getEntryFundingRate(address _collateralToken, address /* _indexToken */, bool /* _isLong */) public view returns (uint256) {
         return vault.cumulativeFundingRates(_collateralToken);
     }
 
-    function getPositionFee(address /* _account */, address /* _collateralToken */, address /* _indexToken */, bool /* _isLong */, uint256 _sizeDelta) public override view returns (uint256) {
+    function getPositionFee(address /* _account */, address /* _collateralToken */, address /* _indexToken */, bool /* _isLong */, uint256 _sizeDelta) public view returns (uint256) {
         if (_sizeDelta == 0) { return 0; }
         uint256 afterFeeUsd = _sizeDelta * (BASIS_POINTS_DIVISOR - vault.marginFeeBasisPoints()) / BASIS_POINTS_DIVISOR;
         return _sizeDelta - afterFeeUsd;
     }
 
-    function getFundingFee(address /* _account */, address _collateralToken, address /* _indexToken */, bool /* _isLong */, uint256 _size, uint256 _entryFundingRate) public override view returns (uint256) {
+    function getFundingFee(address /* _account */, address _collateralToken, address /* _indexToken */, bool /* _isLong */, uint256 _size, uint256 _entryFundingRate) public view returns (uint256) {
         if (_size == 0) { return 0; }
 
         uint256 fundingRate = vault.cumulativeFundingRates(_collateralToken) - _entryFundingRate;
@@ -113,15 +110,15 @@ contract VaultUtils is IVaultUtils, Governable {
         return _size * fundingRate / FUNDING_RATE_PRECISION;
     }
 
-    function getBuyUsdgFeeBasisPoints(address _token, uint256 _usdgAmount) public override view returns (uint256) {
+    function getBuyUsdgFeeBasisPoints(address _token, uint256 _usdgAmount) public view returns (uint256) {
         return getFeeBasisPoints(_token, _usdgAmount, vault.mintBurnFeeBasisPoints(), vault.taxBasisPoints(), true);
     }
 
-    function getSellUsdgFeeBasisPoints(address _token, uint256 _usdgAmount) public override view returns (uint256) {
+    function getSellUsdgFeeBasisPoints(address _token, uint256 _usdgAmount) public view returns (uint256) {
         return getFeeBasisPoints(_token, _usdgAmount, vault.mintBurnFeeBasisPoints(), vault.taxBasisPoints(), false);
     }
 
-    function getSwapFeeBasisPoints(address _tokenIn, address _tokenOut, uint256 _usdgAmount) public override view returns (uint256) {
+    function getSwapFeeBasisPoints(address _tokenIn, address _tokenOut, uint256 _usdgAmount) public view returns (uint256) {
         bool isStableSwap = vault.stableTokens(_tokenIn) && vault.stableTokens(_tokenOut);
         uint256 baseBps = isStableSwap ? vault.stableSwapFeeBasisPoints() : vault.swapFeeBasisPoints();
         uint256 taxBps = isStableSwap ? vault.stableTaxBasisPoints() : vault.taxBasisPoints();
@@ -140,7 +137,7 @@ contract VaultUtils is IVaultUtils, Governable {
     // 6. initialAmount is close to targetAmount, action reduces balance largely => low tax
     // 7. initialAmount is above targetAmount, nextAmount is below targetAmount and vice versa
     // 8. a large swap should have similar fees as the same trade split into multiple smaller swaps
-    function getFeeBasisPoints(address _token, uint256 _usdgDelta, uint256 _feeBasisPoints, uint256 _taxBasisPoints, bool _increment) public override view returns (uint256) {
+    function getFeeBasisPoints(address _token, uint256 _usdgDelta, uint256 _feeBasisPoints, uint256 _taxBasisPoints, bool _increment) public view returns (uint256) {
         if (!vault.hasDynamicFees()) { return _feeBasisPoints; }
 
         uint256 initialAmount = vault.usdgAmounts(_token);

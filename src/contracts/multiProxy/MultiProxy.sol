@@ -9,7 +9,7 @@ abstract contract MultiProxy is BaseMultiProxy {
 
   address[] public implementations;
 
-  function _implementations() internal view override returns (address[] memory) {
+  function _implementations() internal override view returns (address[] memory) {
     return implementations;
   }
 

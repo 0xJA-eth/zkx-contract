@@ -1,9 +1,10 @@
 pragma solidity ^0.8.0;
 
-import "../multiProxy/MultiProxy.sol";
-import "../multiProxy/MultiProxy.sol";
 import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
-import "../../interfaces/IVault.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import "../multiProxy/MultiProxy.sol";
+import "./interfaces/IVault.sol";
+import "./interfaces/IVaultPriceFeed.sol";
 import "./VaultBase.sol";
 
 contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
@@ -38,46 +39,46 @@ contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
     errorController = _errorController;
   }
 
-  function setError(uint256 _errorCode, string calldata _error) external override {
+  function setError(uint256 _errorCode, string calldata _error) external {
     require(msg.sender == errorController, "Vault: invalid errorController");
     errors[_errorCode] = _error;
   }
 
-  function allWhitelistedTokensLength() external override view returns (uint256) {
+  function allWhitelistedTokensLength() external view returns (uint256) {
     return allWhitelistedTokens.length;
   }
 
-  function setInManagerMode(bool _inManagerMode) external override {
+  function setInManagerMode(bool _inManagerMode) external {
     _onlyGov();
     inManagerMode = _inManagerMode;
   }
 
-  function setManager(address _manager, bool _isManager) external override {
+  function setManager(address _manager, bool _isManager) external {
     _onlyGov();
     isManager[_manager] = _isManager;
   }
 
-  function setInPrivateLiquidationMode(bool _inPrivateLiquidationMode) external override {
+  function setInPrivateLiquidationMode(bool _inPrivateLiquidationMode) external {
     _onlyGov();
     inPrivateLiquidationMode = _inPrivateLiquidationMode;
   }
 
-  function setLiquidator(address _liquidator, bool _isActive) external override {
+  function setLiquidator(address _liquidator, bool _isActive) external {
     _onlyGov();
     isLiquidator[_liquidator] = _isActive;
   }
 
-  function setIsSwapEnabled(bool _isSwapEnabled) external override {
+  function setIsSwapEnabled(bool _isSwapEnabled) external {
     _onlyGov();
     isSwapEnabled = _isSwapEnabled;
   }
 
-  function setIsLeverageEnabled(bool _isLeverageEnabled) external override {
+  function setIsLeverageEnabled(bool _isLeverageEnabled) external {
     _onlyGov();
     isLeverageEnabled = _isLeverageEnabled;
   }
 
-  function setMaxGasPrice(uint256 _maxGasPrice) external override {
+  function setMaxGasPrice(uint256 _maxGasPrice) external {
     _onlyGov();
     maxGasPrice = _maxGasPrice;
   }
@@ -87,23 +88,23 @@ contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
     gov = _gov;
   }
 
-  function setPriceFeed(address _priceFeed) external override {
+  function setPriceFeed(address _priceFeed) external {
     _onlyGov();
     priceFeed = _priceFeed;
   }
 
-  function setMaxLeverage(uint256 _maxLeverage) external override {
+  function setMaxLeverage(uint256 _maxLeverage) external {
     _onlyGov();
     _validate(_maxLeverage > MIN_LEVERAGE, 2);
     maxLeverage = _maxLeverage;
   }
 
-  function setBufferAmount(address _token, uint256 _amount) external override {
+  function setBufferAmount(address _token, uint256 _amount) external {
     _onlyGov();
     bufferAmounts[_token] = _amount;
   }
 
-  function setMaxGlobalShortSize(address _token, uint256 _amount) external override {
+  function setMaxGlobalShortSize(address _token, uint256 _amount) external {
     _onlyGov();
     maxGlobalShortSizes[_token] = _amount;
   }
@@ -118,7 +119,7 @@ contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
     uint256 _liquidationFeeUsd,
     uint256 _minProfitTime,
     bool _hasDynamicFees
-  ) external override {
+  ) external {
     _onlyGov();
     _validate(_taxBasisPoints <= MAX_FEE_BASIS_POINTS, 3);
     _validate(_stableTaxBasisPoints <= MAX_FEE_BASIS_POINTS, 4);
@@ -138,7 +139,7 @@ contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
     hasDynamicFees = _hasDynamicFees;
   }
 
-  function setFundingRate(uint256 _fundingInterval, uint256 _fundingRateFactor, uint256 _stableFundingRateFactor) external override {
+  function setFundingRate(uint256 _fundingInterval, uint256 _fundingRateFactor, uint256 _stableFundingRateFactor) external {
     _onlyGov();
     _validate(_fundingInterval >= MIN_FUNDING_RATE_INTERVAL, 10);
     _validate(_fundingRateFactor <= MAX_FUNDING_RATE_FACTOR, 11);
@@ -156,7 +157,7 @@ contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
     uint256 _maxUsdgAmount,
     bool _isStable,
     bool _isShortable
-  ) external override {
+  ) external {
     _onlyGov();
     // increment token count for the first time
     if (!whitelistedTokens[_token]) {
@@ -195,7 +196,7 @@ contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
     whitelistedTokenCount--;
   }
 
-  function withdrawFees(address _token, address _receiver) external override returns (uint256) {
+  function withdrawFees(address _token, address _receiver) external returns (uint256) {
     _onlyGov();
     uint256 amount = feeReserves[_token];
     if(amount == 0) { return 0; }
@@ -215,12 +216,12 @@ contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
   // the governance controlling this function should have a timelock
   function upgradeVault(address _newVault, address _token, uint256 _amount) external {
     _onlyGov();
-    IERC20(_token).safeTransfer(_newVault, _amount);
+    IERC20(_token).transfer(_newVault, _amount);
   }
 
   // deposit into the pool without minting USDG tokens
   // useful in allowing the pool to become over-collaterised
-  function directPoolDeposit(address _token) external override nonReentrant {
+  function directPoolDeposit(address _token) external nonReentrant {
     _validate(whitelistedTokens[_token], 14);
     uint256 tokenAmount = _transferIn(_token);
     _validate(tokenAmount > 0, 15);
@@ -228,11 +229,11 @@ contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
     emit DirectPoolDeposit(_token, tokenAmount);
   }
 
-  function getMaxPrice(address _token) public override view returns (uint256) {
+  function getMaxPrice(address _token) public view returns (uint256) {
     return IVaultPriceFeed(priceFeed).getPrice(_token, true, includeAmmPrice, useSwapPricing);
   }
 
-  function getMinPrice(address _token) public override view returns (uint256) {
+  function getMinPrice(address _token) public view returns (uint256) {
     return IVaultPriceFeed(priceFeed).getPrice(_token, false, includeAmmPrice, useSwapPricing);
   }
 
@@ -252,15 +253,15 @@ contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
   // 6. initialAmount is close to targetAmount, action reduces balance largely => low tax
   // 7. initialAmount is above targetAmount, nextAmount is below targetAmount and vice versa
   // 8. a large swap should have similar fees as the same trade split into multiple smaller swaps
-  function getFeeBasisPoints(address _token, uint256 _usdgDelta, uint256 _feeBasisPoints, uint256 _taxBasisPoints, bool _increment) public override view returns (uint256) {
+  function getFeeBasisPoints(address _token, uint256 _usdgDelta, uint256 _feeBasisPoints, uint256 _taxBasisPoints, bool _increment) public view returns (uint256) {
     return vaultUtils.getFeeBasisPoints(_token, _usdgDelta, _feeBasisPoints, _taxBasisPoints, _increment);
   }
 
-  function getTargetUsdgAmount(address _token) public override view returns (uint256) {
+  function getTargetUsdgAmount(address _token) public view returns (uint256) {
     uint256 supply = IERC20(usdg).totalSupply();
     if (supply == 0) { return 0; }
     uint256 weight = tokenWeights[_token];
-    return weight.mul(supply).div(totalTokenWeights);
+    return weight * supply / totalTokenWeights;
   }
 
 }

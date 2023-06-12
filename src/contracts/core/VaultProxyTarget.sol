@@ -1,10 +1,9 @@
 pragma solidity ^0.8.0;
 
-import "../multiProxy/MultiProxy.sol";
-import "../multiProxy/MultiProxy.sol";
 import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
-import "../../interfaces/IVault.sol";
 import "../multiProxy/ProxyTarget.sol";
+import "../multiProxy/MultiProxy.sol";
+import "./interfaces/IVault.sol";
 import "./Vault.sol";
 
 abstract contract VaultProxyTarget is ReentrancyGuard, ProxyTarget {

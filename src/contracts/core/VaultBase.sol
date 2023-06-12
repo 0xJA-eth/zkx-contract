@@ -1,9 +1,9 @@
 pragma solidity ^0.8.0;
 
 import "../multiProxy/MultiProxy.sol";
-import "../multiProxy/MultiProxy.sol";
 import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
-import "../../interfaces/IVault.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import "./interfaces/IVaultUtils.sol";
 
 abstract contract VaultBase {
 
@@ -128,6 +128,80 @@ abstract contract VaultBase {
 
   mapping (uint256 => string) public errors;
 
+  event BuyUSDG(address account, address token, uint256 tokenAmount, uint256 usdgAmount, uint256 feeBasisPoints);
+  event SellUSDG(address account, address token, uint256 usdgAmount, uint256 tokenAmount, uint256 feeBasisPoints);
+  event Swap(address account, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOut, uint256 amountOutAfterFees, uint256 feeBasisPoints);
+
+  event IncreasePosition(
+    bytes32 key,
+    address account,
+    address collateralToken,
+    address indexToken,
+    uint256 collateralDelta,
+    uint256 sizeDelta,
+    bool isLong,
+    uint256 price,
+    uint256 fee
+  );
+  event DecreasePosition(
+    bytes32 key,
+    address account,
+    address collateralToken,
+    address indexToken,
+    uint256 collateralDelta,
+    uint256 sizeDelta,
+    bool isLong,
+    uint256 price,
+    uint256 fee
+  );
+  event LiquidatePosition(
+    bytes32 key,
+    address account,
+    address collateralToken,
+    address indexToken,
+    bool isLong,
+    uint256 size,
+    uint256 collateral,
+    uint256 reserveAmount,
+    int256 realisedPnl,
+    uint256 markPrice
+  );
+  event UpdatePosition(
+    bytes32 key,
+    uint256 size,
+    uint256 collateral,
+    uint256 averagePrice,
+    uint256 entryFundingRate,
+    uint256 reserveAmount,
+    int256 realisedPnl,
+    uint256 markPrice
+  );
+  event ClosePosition(
+    bytes32 key,
+    uint256 size,
+    uint256 collateral,
+    uint256 averagePrice,
+    uint256 entryFundingRate,
+    uint256 reserveAmount,
+    int256 realisedPnl
+  );
+
+  event UpdateFundingRate(address token, uint256 fundingRate);
+  event UpdatePnl(bytes32 key, bool hasProfit, uint256 delta);
+
+  event CollectSwapFees(address token, uint256 feeUsd, uint256 feeTokens);
+  event CollectMarginFees(address token, uint256 feeUsd, uint256 feeTokens);
+
+  event DirectPoolDeposit(address token, uint256 amount);
+  event IncreasePoolAmount(address token, uint256 amount);
+  event DecreasePoolAmount(address token, uint256 amount);
+  event IncreaseUsdgAmount(address token, uint256 amount);
+  event DecreaseUsdgAmount(address token, uint256 amount);
+  event IncreaseReservedAmount(address token, uint256 amount);
+  event DecreaseReservedAmount(address token, uint256 amount);
+  event IncreaseGuaranteedUsd(address token, uint256 amount);
+  event DecreaseGuaranteedUsd(address token, uint256 amount);
+
   // once the parameters are verified to be working correctly,
   // gov should be set to a timelock contract or a governance contract
   constructor() {
@@ -145,7 +219,7 @@ abstract contract VaultBase {
 
   // tokenBalances
 
-  function _transferIn(address _token) private returns (uint256) {
+  function _transferIn(address _token) internal returns (uint256) {
     uint256 prevBalance = tokenBalances[_token];
     uint256 nextBalance = IERC20(_token).balanceOf(address(this));
     tokenBalances[_token] = nextBalance;
@@ -153,24 +227,24 @@ abstract contract VaultBase {
     return nextBalance - prevBalance;
   }
 
-  function _transferOut(address _token, uint256 _amount, address _receiver) private {
-    IERC20(_token).safeTransfer(_receiver, _amount);
+  function _transferOut(address _token, uint256 _amount, address _receiver) internal {
+    IERC20(_token).transfer(_receiver, _amount);
     tokenBalances[_token] = IERC20(_token).balanceOf(address(this));
   }
 
-  function _updateTokenBalance(address _token) private {
+  function _updateTokenBalance(address _token) internal {
     uint256 nextBalance = IERC20(_token).balanceOf(address(this));
     tokenBalances[_token] = nextBalance;
   }
 
-  function _increasePoolAmount(address _token, uint256 _amount) private {
+  function _increasePoolAmount(address _token, uint256 _amount) internal {
     poolAmounts[_token] = poolAmounts[_token] + _amount;
     uint256 balance = IERC20(_token).balanceOf(address(this));
     _validate(poolAmounts[_token] <= balance, 49);
     emit IncreasePoolAmount(_token, _amount);
   }
 
-  function _decreasePoolAmount(address _token, uint256 _amount) private {
+  function _decreasePoolAmount(address _token, uint256 _amount) internal {
     poolAmounts[_token] = poolAmounts[_token] - _amount;
     _validate(reservedAmounts[_token] <= poolAmounts[_token], 50);
     emit DecreasePoolAmount(_token, _amount);
@@ -183,30 +257,30 @@ abstract contract VaultBase {
     }
 
     if (lastFundingTimes[_collateralToken] == 0) {
-      lastFundingTimes[_collateralToken] = block.timestamp.div(fundingInterval).mul(fundingInterval);
+      lastFundingTimes[_collateralToken] = block.timestamp / fundingInterval * fundingInterval;
       return;
     }
 
-    if (lastFundingTimes[_collateralToken].add(fundingInterval) > block.timestamp) {
+    if (lastFundingTimes[_collateralToken] + fundingInterval > block.timestamp) {
       return;
     }
 
     uint256 fundingRate = getNextFundingRate(_collateralToken);
-    cumulativeFundingRates[_collateralToken] = cumulativeFundingRates[_collateralToken].add(fundingRate);
-    lastFundingTimes[_collateralToken] = block.timestamp.div(fundingInterval).mul(fundingInterval);
+    cumulativeFundingRates[_collateralToken] = cumulativeFundingRates[_collateralToken] + fundingRate;
+    lastFundingTimes[_collateralToken] = block.timestamp / fundingInterval * fundingInterval;
 
     emit UpdateFundingRate(_collateralToken, cumulativeFundingRates[_collateralToken]);
   }
 
-  function getNextFundingRate(address _token) public override view returns (uint256) {
-    if (lastFundingTimes[_token].add(fundingInterval) > block.timestamp) { return 0; }
+  function getNextFundingRate(address _token) public view returns (uint256) {
+    if (lastFundingTimes[_token] + fundingInterval > block.timestamp) { return 0; }
 
-    uint256 intervals = block.timestamp.sub(lastFundingTimes[_token]).div(fundingInterval);
+    uint256 intervals = (block.timestamp - lastFundingTimes[_token]) / fundingInterval;
     uint256 poolAmount = poolAmounts[_token];
     if (poolAmount == 0) { return 0; }
 
     uint256 _fundingRateFactor = stableTokens[_token] ? stableFundingRateFactor : fundingRateFactor;
-    return _fundingRateFactor.mul(reservedAmounts[_token]).mul(intervals).div(poolAmount);
+    return _fundingRateFactor * reservedAmounts[_token] * intervals / poolAmount;
   }
 
 }

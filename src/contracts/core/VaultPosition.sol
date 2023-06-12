@@ -1,18 +1,16 @@
 pragma solidity ^0.8.0;
 
 import "../multiProxy/MultiProxy.sol";
-import "../multiProxy/MultiProxy.sol";
 import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
-import "../../interfaces/IVault.sol";
 import "../multiProxy/ProxyTarget.sol";
-import "./Vault.sol";
 import "./VaultProxyTarget.sol";
+import "./VaultBase.sol";
 
 contract VaultPosition is VaultProxyTarget, VaultBase {
 
   constructor(MultiProxy _parent) VaultProxyTarget(_parent) {}
 
-  function increasePosition(address _account, address _collateralToken, address _indexToken, uint256 _sizeDelta, bool _isLong) external override nonReentrant {
+  function increasePosition(address _account, address _collateralToken, address _indexToken, uint256 _sizeDelta, bool _isLong) external nonReentrant {
     _validate(isLeverageEnabled, 28);
     _validateGasPrice();
     _validateRouter(_account);
@@ -24,7 +22,7 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
     bytes32 key = getPositionKey(_account, _collateralToken, _indexToken, _isLong);
     Position storage position = positions[key];
 
-    uint256 price = _isLong ? getMaxPrice(_indexToken) : getMinPrice(_indexToken);
+    uint256 price = _isLong ? vault().getMaxPrice(_indexToken) : vault().getMinPrice(_indexToken);
 
     if (position.size == 0) {
       position.averagePrice = price;
@@ -80,7 +78,7 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
     emit UpdatePosition(key, position.size, position.collateral, position.averagePrice, position.entryFundingRate, position.reserveAmount, position.realisedPnl, price);
   }
 
-  function decreasePosition(address _account, address _collateralToken, address _indexToken, uint256 _collateralDelta, uint256 _sizeDelta, bool _isLong, address _receiver) external override nonReentrant returns (uint256) {
+  function decreasePosition(address _account, address _collateralToken, address _indexToken, uint256 _collateralDelta, uint256 _sizeDelta, bool _isLong, address _receiver) external nonReentrant returns (uint256) {
     _validateGasPrice();
     _validateRouter(_account);
     return _decreasePosition(_account, _collateralToken, _indexToken, _collateralDelta, _sizeDelta, _isLong, _receiver);
@@ -118,7 +116,7 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
         _decreaseGuaranteedUsd(_collateralToken, _sizeDelta);
       }
 
-      uint256 price = _isLong ? getMinPrice(_indexToken) : getMaxPrice(_indexToken);
+      uint256 price = _isLong ? vault().getMinPrice(_indexToken) : vault().getMaxPrice(_indexToken);
       emit DecreasePosition(key, _account, _collateralToken, _indexToken, _collateralDelta, _sizeDelta, _isLong, price, usdOut - usdOutAfterFee);
       emit UpdatePosition(key, position.size, position.collateral, position.averagePrice, position.entryFundingRate, position.reserveAmount, position.realisedPnl, price);
     } else {
@@ -127,7 +125,7 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
         _decreaseGuaranteedUsd(_collateralToken, _sizeDelta);
       }
 
-      uint256 price = _isLong ? getMinPrice(_indexToken) : getMaxPrice(_indexToken);
+      uint256 price = _isLong ? vault().getMinPrice(_indexToken) : vault().getMaxPrice(_indexToken);
       emit DecreasePosition(key, _account, _collateralToken, _indexToken, _collateralDelta, _sizeDelta, _isLong, price, usdOut - usdOutAfterFee);
       emit ClosePosition(key, position.size, position.collateral, position.averagePrice, position.entryFundingRate, position.reserveAmount, position.realisedPnl);
 
@@ -150,7 +148,7 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
     return 0;
   }
 
-  function liquidatePosition(address _account, address _collateralToken, address _indexToken, bool _isLong, address _feeReceiver) external override nonReentrant {
+  function liquidatePosition(address _account, address _collateralToken, address _indexToken, bool _isLong, address _feeReceiver) external nonReentrant {
     if (inPrivateLiquidationMode) {
       _validate(isLiquidator[msg.sender], 34);
     }
@@ -183,7 +181,7 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
       _decreasePoolAmount(_collateralToken, usdToTokenMin(_collateralToken, marginFees));
     }
 
-    uint256 markPrice = _isLong ? getMinPrice(_indexToken) : getMaxPrice(_indexToken);
+    uint256 markPrice = _isLong ? vault().getMinPrice(_indexToken) : vault().getMaxPrice(_indexToken);
     emit LiquidatePosition(key, _account, _collateralToken, _indexToken, _isLong, position.size, position.collateral, position.reserveAmount, position.realisedPnl, markPrice);
 
     if (!_isLong && marginFees < position.collateral) {
@@ -206,7 +204,7 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
   }
 
   // validateLiquidation returns (state, fees)
-  function validateLiquidation(address _account, address _collateralToken, address _indexToken, bool _isLong, bool _raise) override public view returns (uint256, uint256) {
+  function validateLiquidation(address _account, address _collateralToken, address _indexToken, bool _isLong, bool _raise) public view returns (uint256, uint256) {
     return vaultUtils.validateLiquidation(_account, _collateralToken, _indexToken, _isLong, _raise);
   }
 
@@ -336,21 +334,21 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
     return tokenToUsdMin(_token, getRedemptionCollateral(_token));
   }
 
-  function tokenToUsdMin(address _token, uint256 _tokenAmount) public override view returns (uint256) {
+  function tokenToUsdMin(address _token, uint256 _tokenAmount) public view returns (uint256) {
     if (_tokenAmount == 0) { return 0; }
-    uint256 price = getMinPrice(_token);
+    uint256 price = vault().getMinPrice(_token);
     uint256 decimals = tokenDecimals[_token];
     return _tokenAmount * price / (10 ** decimals);
   }
 
   function usdToTokenMax(address _token, uint256 _usdAmount) public view returns (uint256) {
     if (_usdAmount == 0) { return 0; }
-    return usdToToken(_token, _usdAmount, getMinPrice(_token));
+    return usdToToken(_token, _usdAmount, vault().getMinPrice(_token));
   }
 
   function usdToTokenMin(address _token, uint256 _usdAmount) public view returns (uint256) {
     if (_usdAmount == 0) { return 0; }
-    return usdToToken(_token, _usdAmount, getMaxPrice(_token));
+    return usdToToken(_token, _usdAmount, vault().getMaxPrice(_token));
   }
 
   function usdToToken(address _token, uint256 _usdAmount, uint256 _price) public view returns (uint256) {
@@ -359,7 +357,7 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
     return _usdAmount * (10 ** decimals) / _price;
   }
 
-  function getPosition(address _account, address _collateralToken, address _indexToken, bool _isLong) public override view returns (uint256, uint256, uint256, uint256, uint256, uint256, bool, uint256) {
+  function getPosition(address _account, address _collateralToken, address _indexToken, bool _isLong) public view returns (uint256, uint256, uint256, uint256, uint256, uint256, bool, uint256) {
     bytes32 key = getPositionKey(_account, _collateralToken, _indexToken, _isLong);
     Position memory position = positions[key];
     uint256 realisedPnl = position.realisedPnl > 0 ? uint256(position.realisedPnl) : uint256(-position.realisedPnl);
@@ -424,7 +422,7 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
     uint256 size = globalShortSizes[_token];
     if (size == 0) { return (false, 0); }
 
-    uint256 nextPrice = getMaxPrice(_token);
+    uint256 nextPrice = vault().getMaxPrice(_token);
     uint256 averagePrice = globalShortAveragePrices[_token];
     uint256 priceDelta = averagePrice > nextPrice ? averagePrice - nextPrice : nextPrice - averagePrice;
     uint256 delta = size * priceDelta / averagePrice;
@@ -439,9 +437,9 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
     return getDelta(_indexToken, position.size, position.averagePrice, _isLong, position.lastIncreasedTime);
   }
 
-  function getDelta(address _indexToken, uint256 _size, uint256 _averagePrice, bool _isLong, uint256 _lastIncreasedTime) public override view returns (bool, uint256) {
+  function getDelta(address _indexToken, uint256 _size, uint256 _averagePrice, bool _isLong, uint256 _lastIncreasedTime) public view returns (bool, uint256) {
     _validate(_averagePrice > 0, 38);
-    uint256 price = _isLong ? getMinPrice(_indexToken) : getMaxPrice(_indexToken);
+    uint256 price = _isLong ? vault().getMinPrice(_indexToken) : vault().getMaxPrice(_indexToken);
     uint256 priceDelta = _averagePrice > price ? _averagePrice - price : price - _averagePrice;
     uint256 delta = _size * priceDelta / _averagePrice;
 

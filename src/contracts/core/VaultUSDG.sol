@@ -1,18 +1,16 @@
 pragma solidity ^0.8.0;
 
 import "../multiProxy/MultiProxy.sol";
-import "../multiProxy/MultiProxy.sol";
 import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
-import "../../interfaces/IVault.sol";
-import "../multiProxy/ProxyTarget.sol";
-import "./Vault.sol";
 import "./VaultProxyTarget.sol";
+import "./VaultBase.sol";
+import "../tokens/interfaces/IUSDG.sol";
 
 contract VaultUSDG is VaultProxyTarget, VaultBase {
 
   constructor(MultiProxy _parent) VaultProxyTarget(_parent) {}
 
-  function setUsdgAmount(address _token, uint256 _amount) external override {
+  function setUsdgAmount(address _token, uint256 _amount) external {
     _onlyGov();
 
     uint256 usdgAmount = usdgAmounts[_token];
@@ -24,7 +22,7 @@ contract VaultUSDG is VaultProxyTarget, VaultBase {
     _decreaseUsdgAmount(_token, usdgAmount - _amount);
   }
 
-  function buyUSDG(address _token, address _receiver) external override nonReentrant returns (uint256) {
+  function buyUSDG(address _token, address _receiver) external nonReentrant returns (uint256) {
     _validateManager();
     _validate(whitelistedTokens[_token], 16);
     useSwapPricing = true;
@@ -34,7 +32,7 @@ contract VaultUSDG is VaultProxyTarget, VaultBase {
 
     updateCumulativeFundingRate(_token, _token);
 
-    uint256 price = getMinPrice(_token);
+    uint256 price = vault().getMinPrice(_token);
 
     uint256 usdgAmount = tokenAmount * price / PRICE_PRECISION;
     usdgAmount = adjustForDecimals(usdgAmount, _token, usdg);
@@ -56,7 +54,7 @@ contract VaultUSDG is VaultProxyTarget, VaultBase {
     return mintAmount;
   }
 
-  function sellUSDG(address _token, address _receiver) external override nonReentrant returns (uint256) {
+  function sellUSDG(address _token, address _receiver) external nonReentrant returns (uint256) {
     _validateManager();
     _validate(whitelistedTokens[_token], 19);
     useSwapPricing = true;
@@ -92,7 +90,7 @@ contract VaultUSDG is VaultProxyTarget, VaultBase {
     return amountOut;
   }
 
-  function swap(address _tokenIn, address _tokenOut, address _receiver) external override nonReentrant returns (uint256) {
+  function swap(address _tokenIn, address _tokenOut, address _receiver) external nonReentrant returns (uint256) {
     // 验证交易是否启用
     _validate(isSwapEnabled, 23);
     // 验证输入资产是否在白名单中
@@ -188,8 +186,8 @@ contract VaultUSDG is VaultProxyTarget, VaultBase {
     }
   }
 
-  function getRedemptionAmount(address _token, uint256 _usdgAmount) public override view returns (uint256) {
-    uint256 price = getMaxPrice(_token);
+  function getRedemptionAmount(address _token, uint256 _usdgAmount) public view returns (uint256) {
+    uint256 price = vault().getMaxPrice(_token);
     uint256 redemptionAmount = _usdgAmount * PRICE_PRECISION / price;
     return adjustForDecimals(redemptionAmount, usdg, _token);
   }
@@ -204,7 +202,7 @@ contract VaultUSDG is VaultProxyTarget, VaultBase {
     uint256 afterFeeAmount = _amount * (BASIS_POINTS_DIVISOR - _feeBasisPoints) / BASIS_POINTS_DIVISOR;
     uint256 feeAmount = _amount - afterFeeAmount;
     feeReserves[_token] = feeReserves[_token] + feeAmount;
-    emit CollectSwapFees(_token, tokenToUsdMin(_token, feeAmount), feeAmount);
+    emit CollectSwapFees(_token, vault().tokenToUsdMin(_token, feeAmount), feeAmount);
     return afterFeeAmount;
   }
 
