@@ -204,18 +204,28 @@ contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
     return amount;
   }
 
-  // the governance controlling this function should have a timelock
-  function upgradeVault(address _newVault, address _token, uint256 _amount) external {
-    _onlyGov();
-    IERC20(_token).safeTransfer(_newVault, _amount);
-  }
-
   function addRouter(address _router) external {
     approvedRouters[msg.sender][_router] = true;
   }
 
   function removeRouter(address _router) external {
     approvedRouters[msg.sender][_router] = false;
+  }
+
+  // the governance controlling this function should have a timelock
+  function upgradeVault(address _newVault, address _token, uint256 _amount) external {
+    _onlyGov();
+    IERC20(_token).safeTransfer(_newVault, _amount);
+  }
+
+  // deposit into the pool without minting USDG tokens
+  // useful in allowing the pool to become over-collaterised
+  function directPoolDeposit(address _token) external override nonReentrant {
+    _validate(whitelistedTokens[_token], 14);
+    uint256 tokenAmount = _transferIn(_token);
+    _validate(tokenAmount > 0, 15);
+    _increasePoolAmount(_token, tokenAmount);
+    emit DirectPoolDeposit(_token, tokenAmount);
   }
 
   function getMaxPrice(address _token) public override view returns (uint256) {
@@ -244,6 +254,13 @@ contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
   // 8. a large swap should have similar fees as the same trade split into multiple smaller swaps
   function getFeeBasisPoints(address _token, uint256 _usdgDelta, uint256 _feeBasisPoints, uint256 _taxBasisPoints, bool _increment) public override view returns (uint256) {
     return vaultUtils.getFeeBasisPoints(_token, _usdgDelta, _feeBasisPoints, _taxBasisPoints, _increment);
+  }
+
+  function getTargetUsdgAmount(address _token) public override view returns (uint256) {
+    uint256 supply = IERC20(usdg).totalSupply();
+    if (supply == 0) { return 0; }
+    uint256 weight = tokenWeights[_token];
+    return weight.mul(supply).div(totalTokenWeights);
   }
 
 }

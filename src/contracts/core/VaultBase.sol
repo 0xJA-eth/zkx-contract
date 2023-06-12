@@ -143,34 +143,6 @@ abstract contract VaultBase {
     _validate(msg.sender == gov, 53);
   }
 
-  function _validatePosition(uint256 _size, uint256 _collateral) private view {
-    if (_size == 0) {
-      _validate(_collateral == 0, 39);
-      return;
-    }
-    _validate(_size >= _collateral, 40);
-  }
-
-  function _validateRouter(address _account) private view {
-    if (msg.sender == _account) { return; }
-    if (msg.sender == router) { return; }
-    _validate(approvedRouters[_account][msg.sender], 41);
-  }
-
-  function _validateTokens(address _collateralToken, address _indexToken, bool _isLong) private view {
-    if (_isLong) {
-      _validate(_collateralToken == _indexToken, 42);
-      _validate(whitelistedTokens[_collateralToken], 43);
-      _validate(!stableTokens[_collateralToken], 44);
-      return;
-    }
-
-    _validate(whitelistedTokens[_collateralToken], 45);
-    _validate(stableTokens[_collateralToken], 46);
-    _validate(!stableTokens[_indexToken], 47);
-    _validate(shortableTokens[_indexToken], 48);
-  }
-
   // tokenBalances
 
   function _transferIn(address _token) private returns (uint256) {
@@ -191,18 +163,6 @@ abstract contract VaultBase {
     tokenBalances[_token] = nextBalance;
   }
 
-  // pool
-
-  // deposit into the pool without minting USDG tokens
-  // useful in allowing the pool to become over-collaterised
-  function directPoolDeposit(address _token) external override nonReentrant {
-    _validate(whitelistedTokens[_token], 14);
-    uint256 tokenAmount = _transferIn(_token);
-    _validate(tokenAmount > 0, 15);
-    _increasePoolAmount(_token, tokenAmount);
-    emit DirectPoolDeposit(_token, tokenAmount);
-  }
-
   function _increasePoolAmount(address _token, uint256 _amount) private {
     poolAmounts[_token] = poolAmounts[_token] + _amount;
     uint256 balance = IERC20(_token).balanceOf(address(this));
@@ -214,6 +174,39 @@ abstract contract VaultBase {
     poolAmounts[_token] = poolAmounts[_token] - _amount;
     _validate(reservedAmounts[_token] <= poolAmounts[_token], 50);
     emit DecreasePoolAmount(_token, _amount);
+  }
+
+  function updateCumulativeFundingRate(address _collateralToken, address _indexToken) public {
+    bool shouldUpdate = vaultUtils.updateCumulativeFundingRate(_collateralToken, _indexToken);
+    if (!shouldUpdate) {
+      return;
+    }
+
+    if (lastFundingTimes[_collateralToken] == 0) {
+      lastFundingTimes[_collateralToken] = block.timestamp.div(fundingInterval).mul(fundingInterval);
+      return;
+    }
+
+    if (lastFundingTimes[_collateralToken].add(fundingInterval) > block.timestamp) {
+      return;
+    }
+
+    uint256 fundingRate = getNextFundingRate(_collateralToken);
+    cumulativeFundingRates[_collateralToken] = cumulativeFundingRates[_collateralToken].add(fundingRate);
+    lastFundingTimes[_collateralToken] = block.timestamp.div(fundingInterval).mul(fundingInterval);
+
+    emit UpdateFundingRate(_collateralToken, cumulativeFundingRates[_collateralToken]);
+  }
+
+  function getNextFundingRate(address _token) public override view returns (uint256) {
+    if (lastFundingTimes[_token].add(fundingInterval) > block.timestamp) { return 0; }
+
+    uint256 intervals = block.timestamp.sub(lastFundingTimes[_token]).div(fundingInterval);
+    uint256 poolAmount = poolAmounts[_token];
+    if (poolAmount == 0) { return 0; }
+
+    uint256 _fundingRateFactor = stableTokens[_token] ? stableFundingRateFactor : fundingRateFactor;
+    return _fundingRateFactor.mul(reservedAmounts[_token]).mul(intervals).div(poolAmount);
   }
 
 }

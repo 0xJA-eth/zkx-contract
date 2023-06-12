@@ -208,4 +208,10 @@ contract VaultUSDG is VaultProxyTarget, VaultBase {
     return afterFeeAmount;
   }
 
+  // we have this validation as a function instead of a modifier to reduce contract size
+  function _validateManager() private view {
+    if (inManagerMode) {
+      _validate(isManager[msg.sender], 54);
+    }
+  }
 }

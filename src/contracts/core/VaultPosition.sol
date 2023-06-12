@@ -384,6 +384,13 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
       ));
   }
 
+  function getPositionLeverage(address _account, address _collateralToken, address _indexToken, bool _isLong) public view returns (uint256) {
+    bytes32 key = getPositionKey(_account, _collateralToken, _indexToken, _isLong);
+    Position memory position = positions[key];
+    _validate(position.collateral > 0, 37);
+    return position.size * BASIS_POINTS_DIVISOR / position.collateral;
+  }
+
   // for longs: nextAveragePrice = (nextPrice * nextSize)/ (nextSize + delta)
   // for shorts: nextAveragePrice = (nextPrice * nextSize) / (nextSize - delta)
   function getNextAveragePrice(address _indexToken, uint256 _size, uint256 _averagePrice, bool _isLong, uint256 _nextPrice, uint256 _sizeDelta, uint256 _lastIncreasedTime) public view returns (uint256) {
@@ -430,13 +437,6 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
     bytes32 key = getPositionKey(_account, _collateralToken, _indexToken, _isLong);
     Position memory position = positions[key];
     return getDelta(_indexToken, position.size, position.averagePrice, _isLong, position.lastIncreasedTime);
-  }
-
-  function getPositionLeverage(address _account, address _collateralToken, address _indexToken, bool _isLong) public view returns (uint256) {
-    bytes32 key = getPositionKey(_account, _collateralToken, _indexToken, _isLong);
-    Position memory position = positions[key];
-    _validate(position.collateral > 0, 37);
-    return position.size * BASIS_POINTS_DIVISOR / position.collateral;
   }
 
   function getDelta(address _indexToken, uint256 _size, uint256 _averagePrice, bool _isLong, uint256 _lastIncreasedTime) public override view returns (bool, uint256) {
@@ -486,5 +486,39 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
 
   function getPositionFee(address _account, address _collateralToken, address _indexToken, bool _isLong, uint256 _sizeDelta) public view returns (uint256) {
     return vaultUtils.getPositionFee(_account, _collateralToken, _indexToken, _isLong, _sizeDelta);
+  }
+
+  // we have this validation as a function instead of a modifier to reduce contract size
+  function _validateGasPrice() private view {
+    if (maxGasPrice == 0) { return; }
+    _validate(tx.gasprice <= maxGasPrice, 55);
+  }
+
+  function _validatePosition(uint256 _size, uint256 _collateral) private view {
+    if (_size == 0) {
+      _validate(_collateral == 0, 39);
+      return;
+    }
+    _validate(_size >= _collateral, 40);
+  }
+
+  function _validateRouter(address _account) private view {
+    if (msg.sender == _account) { return; }
+    if (msg.sender == router) { return; }
+    _validate(approvedRouters[_account][msg.sender], 41);
+  }
+
+  function _validateTokens(address _collateralToken, address _indexToken, bool _isLong) private view {
+    if (_isLong) {
+      _validate(_collateralToken == _indexToken, 42);
+      _validate(whitelistedTokens[_collateralToken], 43);
+      _validate(!stableTokens[_collateralToken], 44);
+      return;
+    }
+
+    _validate(whitelistedTokens[_collateralToken], 45);
+    _validate(stableTokens[_collateralToken], 46);
+    _validate(!stableTokens[_indexToken], 47);
+    _validate(shortableTokens[_indexToken], 48);
   }
 }
