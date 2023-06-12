@@ -4,129 +4,246 @@ import "../multiProxy/MultiProxy.sol";
 import "../multiProxy/MultiProxy.sol";
 import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
 import "../../interfaces/IVault.sol";
-//import "@openzeppelin/contracts/security/PullPayment.sol";
+import "./VaultBase.sol";
 
-contract Vault is ReentrancyGuard, MultiProxy {
+contract Vault is ReentrancyGuard, MultiProxy, VaultBase {
 
-  struct Position {
-    uint256 size;
-    uint256 collateral;
-    uint256 averagePrice;
-    uint256 entryFundingRate;
-    uint256 reserveAmount;
-    int256 realisedPnl;
-    uint256 lastIncreasedTime;
+  function initialize(
+    address _router,
+    address _usdg,
+    address _priceFeed,
+    uint256 _liquidationFeeUsd,
+    uint256 _fundingRateFactor,
+    uint256 _stableFundingRateFactor
+  ) external {
+    _onlyGov();
+    _validate(!isInitialized, 1);
+    isInitialized = true;
+
+    router = _router;
+    usdg = _usdg;
+    priceFeed = _priceFeed;
+    liquidationFeeUsd = _liquidationFeeUsd;
+    fundingRateFactor = _fundingRateFactor;
+    stableFundingRateFactor = _stableFundingRateFactor;
   }
 
-  uint256 public constant BASIS_POINTS_DIVISOR = 10000;
-  uint256 public constant FUNDING_RATE_PRECISION = 1000000;
-  uint256 public constant PRICE_PRECISION = 10 ** 30;
-  uint256 public constant MIN_LEVERAGE = 10000; // 1x
-  uint256 public constant USDG_DECIMALS = 18;
-  uint256 public constant MAX_FEE_BASIS_POINTS = 500; // 5%
-  uint256 public constant MAX_LIQUIDATION_FEE_USD = 100 * PRICE_PRECISION; // 100 USD
-  uint256 public constant MIN_FUNDING_RATE_INTERVAL = 1 hours;
-  uint256 public constant MAX_FUNDING_RATE_FACTOR = 10000; // 1%
+  function setVaultUtils(IVaultUtils _vaultUtils) external {
+    _onlyGov();
+    vaultUtils = _vaultUtils;
+  }
 
-  bool public isInitialized;
-  bool public isSwapEnabled = true;
-  bool public isLeverageEnabled = true;
+  function setErrorController(address _errorController) external {
+    _onlyGov();
+    errorController = _errorController;
+  }
 
-  IVaultUtils public vaultUtils;
+  function setError(uint256 _errorCode, string calldata _error) external override {
+    require(msg.sender == errorController, "Vault: invalid errorController");
+    errors[_errorCode] = _error;
+  }
 
-  address public errorController;
+  function allWhitelistedTokensLength() external override view returns (uint256) {
+    return allWhitelistedTokens.length;
+  }
 
-  address public router;
-  address public priceFeed;
+  function setInManagerMode(bool _inManagerMode) external override {
+    _onlyGov();
+    inManagerMode = _inManagerMode;
+  }
 
-  address public usdg;
-  address public gov;
+  function setManager(address _manager, bool _isManager) external override {
+    _onlyGov();
+    isManager[_manager] = _isManager;
+  }
 
-  uint256 public whitelistedTokenCount;
+  function setInPrivateLiquidationMode(bool _inPrivateLiquidationMode) external override {
+    _onlyGov();
+    inPrivateLiquidationMode = _inPrivateLiquidationMode;
+  }
 
-  uint256 public maxLeverage = 50 * 10000; // 50x
+  function setLiquidator(address _liquidator, bool _isActive) external override {
+    _onlyGov();
+    isLiquidator[_liquidator] = _isActive;
+  }
 
-  uint256 public liquidationFeeUsd;
-  uint256 public taxBasisPoints = 50; // 0.5%
-  uint256 public stableTaxBasisPoints = 20; // 0.2%
-  uint256 public mintBurnFeeBasisPoints = 30; // 0.3%
-  uint256 public swapFeeBasisPoints = 30; // 0.3%
-  uint256 public stableSwapFeeBasisPoints = 4; // 0.04%
-  uint256 public marginFeeBasisPoints = 10; // 0.1%
+  function setIsSwapEnabled(bool _isSwapEnabled) external override {
+    _onlyGov();
+    isSwapEnabled = _isSwapEnabled;
+  }
 
-  uint256 public minProfitTime;
-  bool public hasDynamicFees = false;
+  function setIsLeverageEnabled(bool _isLeverageEnabled) external override {
+    _onlyGov();
+    isLeverageEnabled = _isLeverageEnabled;
+  }
 
-  uint256 public fundingInterval = 8 hours;
-  uint256 public fundingRateFactor;
-  uint256 public stableFundingRateFactor;
-  uint256 public totalTokenWeights;
+  function setMaxGasPrice(uint256 _maxGasPrice) external override {
+    _onlyGov();
+    maxGasPrice = _maxGasPrice;
+  }
 
-  bool public includeAmmPrice = true;
-  bool public useSwapPricing = false;
+  function setGov(address _gov) external {
+    _onlyGov();
+    gov = _gov;
+  }
 
-  bool public inManagerMode = false;
-  bool public inPrivateLiquidationMode = false;
+  function setPriceFeed(address _priceFeed) external override {
+    _onlyGov();
+    priceFeed = _priceFeed;
+  }
 
-  uint256 public maxGasPrice;
+  function setMaxLeverage(uint256 _maxLeverage) external override {
+    _onlyGov();
+    _validate(_maxLeverage > MIN_LEVERAGE, 2);
+    maxLeverage = _maxLeverage;
+  }
 
-  mapping (address => mapping (address => bool)) public approvedRouters;
-  mapping (address => bool) public isLiquidator;
-  mapping (address => bool) public isManager;
+  function setBufferAmount(address _token, uint256 _amount) external override {
+    _onlyGov();
+    bufferAmounts[_token] = _amount;
+  }
 
-  address[] public allWhitelistedTokens;
+  function setMaxGlobalShortSize(address _token, uint256 _amount) external override {
+    _onlyGov();
+    maxGlobalShortSizes[_token] = _amount;
+  }
 
-  mapping (address => bool) public whitelistedTokens;
-  mapping (address => uint256) public tokenDecimals;
-  mapping (address => uint256) public minProfitBasisPoints;
-  mapping (address => bool) public stableTokens;
-  mapping (address => bool) public shortableTokens;
+  function setFees(
+    uint256 _taxBasisPoints,
+    uint256 _stableTaxBasisPoints,
+    uint256 _mintBurnFeeBasisPoints,
+    uint256 _swapFeeBasisPoints,
+    uint256 _stableSwapFeeBasisPoints,
+    uint256 _marginFeeBasisPoints,
+    uint256 _liquidationFeeUsd,
+    uint256 _minProfitTime,
+    bool _hasDynamicFees
+  ) external override {
+    _onlyGov();
+    _validate(_taxBasisPoints <= MAX_FEE_BASIS_POINTS, 3);
+    _validate(_stableTaxBasisPoints <= MAX_FEE_BASIS_POINTS, 4);
+    _validate(_mintBurnFeeBasisPoints <= MAX_FEE_BASIS_POINTS, 5);
+    _validate(_swapFeeBasisPoints <= MAX_FEE_BASIS_POINTS, 6);
+    _validate(_stableSwapFeeBasisPoints <= MAX_FEE_BASIS_POINTS, 7);
+    _validate(_marginFeeBasisPoints <= MAX_FEE_BASIS_POINTS, 8);
+    _validate(_liquidationFeeUsd <= MAX_LIQUIDATION_FEE_USD, 9);
+    taxBasisPoints = _taxBasisPoints;
+    stableTaxBasisPoints = _stableTaxBasisPoints;
+    mintBurnFeeBasisPoints = _mintBurnFeeBasisPoints;
+    swapFeeBasisPoints = _swapFeeBasisPoints;
+    stableSwapFeeBasisPoints = _stableSwapFeeBasisPoints;
+    marginFeeBasisPoints = _marginFeeBasisPoints;
+    liquidationFeeUsd = _liquidationFeeUsd;
+    minProfitTime = _minProfitTime;
+    hasDynamicFees = _hasDynamicFees;
+  }
 
-  // tokenBalances is used only to determine _transferIn values
-  mapping (address => uint256) public tokenBalances;
+  function setFundingRate(uint256 _fundingInterval, uint256 _fundingRateFactor, uint256 _stableFundingRateFactor) external override {
+    _onlyGov();
+    _validate(_fundingInterval >= MIN_FUNDING_RATE_INTERVAL, 10);
+    _validate(_fundingRateFactor <= MAX_FUNDING_RATE_FACTOR, 11);
+    _validate(_stableFundingRateFactor <= MAX_FUNDING_RATE_FACTOR, 12);
+    fundingInterval = _fundingInterval;
+    fundingRateFactor = _fundingRateFactor;
+    stableFundingRateFactor = _stableFundingRateFactor;
+  }
 
-  // tokenWeights allows customisation of index composition
-  mapping (address => uint256) public tokenWeights;
+  function setTokenConfig(
+    address _token,
+    uint256 _tokenDecimals,
+    uint256 _tokenWeight,
+    uint256 _minProfitBps,
+    uint256 _maxUsdgAmount,
+    bool _isStable,
+    bool _isShortable
+  ) external override {
+    _onlyGov();
+    // increment token count for the first time
+    if (!whitelistedTokens[_token]) {
+      whitelistedTokenCount++;
+      allWhitelistedTokens.push(_token);
+    }
 
-  // usdgAmounts tracks the amount of USDG debt for each whitelisted token
-  mapping (address => uint256) public usdgAmounts;
+    uint256 _totalTokenWeights = totalTokenWeights;
+    _totalTokenWeights = _totalTokenWeights - tokenWeights[_token];
 
-  // maxUsdgAmounts allows setting a max amount of USDG debt for a token
-  mapping (address => uint256) public maxUsdgAmounts;
+    whitelistedTokens[_token] = true;
+    tokenDecimals[_token] = _tokenDecimals;
+    tokenWeights[_token] = _tokenWeight;
+    minProfitBasisPoints[_token] = _minProfitBps;
+    maxUsdgAmounts[_token] = _maxUsdgAmount;
+    stableTokens[_token] = _isStable;
+    shortableTokens[_token] = _isShortable;
 
-  // poolAmounts tracks the number of received tokens that can be used for leverage
-  // this is tracked separately from tokenBalances to exclude funds that are deposited as margin collateral
-  mapping (address => uint256) public poolAmounts;
+    totalTokenWeights = _totalTokenWeights + _tokenWeight;
 
-  // reservedAmounts tracks the number of tokens reserved for open leverage positions
-  mapping (address => uint256) public reservedAmounts;
+    // validate price feed
+    getMaxPrice(_token);
+  }
 
-  // bufferAmounts allows specification of an amount to exclude from swaps
-  // this can be used to ensure a certain amount of liquidity is available for leverage positions
-  mapping (address => uint256) public bufferAmounts;
+  function clearTokenConfig(address _token) external {
+    _onlyGov();
+    _validate(whitelistedTokens[_token], 13);
+    totalTokenWeights = totalTokenWeights - tokenWeights[_token];
+    delete whitelistedTokens[_token];
+    delete tokenDecimals[_token];
+    delete tokenWeights[_token];
+    delete minProfitBasisPoints[_token];
+    delete maxUsdgAmounts[_token];
+    delete stableTokens[_token];
+    delete shortableTokens[_token];
+    whitelistedTokenCount--;
+  }
 
-  // guaranteedUsd tracks the amount of USD that is "guaranteed" by opened leverage positions
-  // this value is used to calculate the redemption values for selling of USDG
-  // this is an estimated amount, it is possible for the actual guaranteed value to be lower
-  // in the case of sudden price decreases, the guaranteed value should be corrected
-  // after liquidations are carried out
-  mapping (address => uint256) public guaranteedUsd;
+  function withdrawFees(address _token, address _receiver) external override returns (uint256) {
+    _onlyGov();
+    uint256 amount = feeReserves[_token];
+    if(amount == 0) { return 0; }
+    feeReserves[_token] = 0;
+    _transferOut(_token, amount, _receiver);
+    return amount;
+  }
 
-  // cumulativeFundingRates tracks the funding rates based on utilization
-  mapping (address => uint256) public cumulativeFundingRates;
-  // lastFundingTimes tracks the last time funding was updated for a token
-  mapping (address => uint256) public lastFundingTimes;
+  // the governance controlling this function should have a timelock
+  function upgradeVault(address _newVault, address _token, uint256 _amount) external {
+    _onlyGov();
+    IERC20(_token).safeTransfer(_newVault, _amount);
+  }
 
-  // positions tracks all open positions
-  mapping (bytes32 => Position) public positions;
+  function addRouter(address _router) external {
+    approvedRouters[msg.sender][_router] = true;
+  }
 
-  // feeReserves tracks the amount of fees per token
-  mapping (address => uint256) public feeReserves;
+  function removeRouter(address _router) external {
+    approvedRouters[msg.sender][_router] = false;
+  }
 
-  mapping (address => uint256) public globalShortSizes;
-  mapping (address => uint256) public globalShortAveragePrices;
-  mapping (address => uint256) public maxGlobalShortSizes;
+  function getMaxPrice(address _token) public override view returns (uint256) {
+    return IVaultPriceFeed(priceFeed).getPrice(_token, true, includeAmmPrice, useSwapPricing);
+  }
 
-  mapping (uint256 => string) public errors;
+  function getMinPrice(address _token) public override view returns (uint256) {
+    return IVaultPriceFeed(priceFeed).getPrice(_token, false, includeAmmPrice, useSwapPricing);
+  }
+
+  function getUtilisation(address _token) public view returns (uint256) {
+    uint256 poolAmount = poolAmounts[_token];
+    if (poolAmount == 0) { return 0; }
+
+    return reservedAmounts[_token] * FUNDING_RATE_PRECISION / poolAmount;
+  }
+
+  // cases to consider
+  // 1. initialAmount is far from targetAmount, action increases balance slightly => high rebate
+  // 2. initialAmount is far from targetAmount, action increases balance largely => high rebate
+  // 3. initialAmount is close to targetAmount, action increases balance slightly => low rebate
+  // 4. initialAmount is far from targetAmount, action reduces balance slightly => high tax
+  // 5. initialAmount is far from targetAmount, action reduces balance largely => high tax
+  // 6. initialAmount is close to targetAmount, action reduces balance largely => low tax
+  // 7. initialAmount is above targetAmount, nextAmount is below targetAmount and vice versa
+  // 8. a large swap should have similar fees as the same trade split into multiple smaller swaps
+  function getFeeBasisPoints(address _token, uint256 _usdgDelta, uint256 _feeBasisPoints, uint256 _taxBasisPoints, bool _increment) public override view returns (uint256) {
+    return vaultUtils.getFeeBasisPoints(_token, _usdgDelta, _feeBasisPoints, _taxBasisPoints, _increment);
+  }
 
 }
