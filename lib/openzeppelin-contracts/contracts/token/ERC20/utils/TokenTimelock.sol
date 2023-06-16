@@ -13,7 +13,6 @@ import "./SafeERC20.sol";
  * after 1 year".
  */
 contract TokenTimelock {
-    using SafeERC20 for IERC20;
 
     // ERC20 basic token contract being held
     IERC20 private immutable _token;

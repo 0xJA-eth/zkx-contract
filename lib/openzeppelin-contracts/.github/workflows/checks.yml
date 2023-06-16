@@ -32,12 +32,12 @@ jobs:
       - name: Set up environment
         uses: ./.github/actions/setup
       - name: Run tests and generate gas report
-        run: npm run test
+        run: npm run gmx-test
       - name: Check linearisation of the inheritance graph
-        run: npm run test:inheritance
+        run: npm run gmx-test:inheritance
       - name: Check proceduraly generated contracts are up-to-date
         if: github.repository != 'OpenZeppelin/openzeppelin-contracts-upgradeable'
-        run: npm run test:generation
+        run: npm run gmx-test:generation
       - name: Compare gas costs
         uses: ./.github/actions/gas-compare
         with:
@@ -55,7 +55,7 @@ jobs:
         with:
           version: nightly
       - name: Run tests
-        run: forge test -vv
+        run: forge gmx-test -vv
 
   coverage:
     if: github.repository != 'OpenZeppelin/openzeppelin-contracts-upgradeable'

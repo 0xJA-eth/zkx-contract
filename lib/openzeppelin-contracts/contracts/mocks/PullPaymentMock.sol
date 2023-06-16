@@ -8,7 +8,7 @@ import "../security/PullPayment.sol";
 contract PullPaymentMock is PullPayment {
     constructor() payable {}
 
-    // test helper function to call asyncTransfer
+    // gmx-test helper function to call asyncTransfer
     function callTransfer(address dest, uint256 amount) public {
         _asyncTransfer(dest, amount);
     }

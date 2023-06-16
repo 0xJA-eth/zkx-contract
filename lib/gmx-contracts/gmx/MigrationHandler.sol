@@ -2,16 +2,14 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/math/SafeMath.sol";
-import "../libraries/token/IERC20.sol";
-import "../libraries/utils/ReentrancyGuard.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
 
 import "./interfaces/IAmmRouter.sol";
 import "./interfaces/IGmxMigrator.sol";
 import "../core/interfaces/IVault.sol";
 
 contract MigrationHandler is ReentrancyGuard {
-    using SafeMath for uint256;
 
     uint256 public constant USDG_PRECISION = 10 ** 18;
 

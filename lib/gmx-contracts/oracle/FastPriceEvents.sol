@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import "../libraries/math/SafeMath.sol";
 
 import "./interfaces/IFastPriceEvents.sol";
 import "../access/Governable.sol";

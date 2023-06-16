@@ -2,8 +2,7 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/math/SafeMath.sol";
-import "../libraries/token/IERC20.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
 import "../core/interfaces/IGlpManager.sol";
 
@@ -17,7 +16,6 @@ import "../access/Governable.sol";
 // meant for a one-time use for a specified sender
 // requires the contract to be added as a handler for stakedGlpTracker and feeGlpTracker
 contract StakedGlpMigrator is Governable {
-    using SafeMath for uint256;
 
     address public sender;
     address public glp;

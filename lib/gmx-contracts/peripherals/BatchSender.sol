@@ -2,13 +2,11 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/token/IERC20.sol";
-import "../libraries/math/SafeMath.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
 import "../access/Governable.sol";
 
 contract BatchSender is Governable {
-    using SafeMath for uint256;
 
     mapping (address => bool) public isHandler;
 

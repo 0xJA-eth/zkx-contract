@@ -57,7 +57,7 @@ contract ERC721ConsecutiveTest is Test {
 
         ERC721ConsecutiveTarget token = new ERC721ConsecutiveTarget(toSingleton(receiver), batches);
 
-        // only test if we minted at least one token
+        // only gmx-test if we minted at least one token
         uint256 supply = token.totalMinted();
         vm.assume(supply > 0);
 
@@ -86,7 +86,7 @@ contract ERC721ConsecutiveTest is Test {
         receivers[0] = accounts[0];
         receivers[1] = accounts[1];
 
-        // We assume _maxBatchSize is 5000 (the default). This test will break otherwise.
+        // We assume _maxBatchSize is 5000 (the default). This gmx-test will break otherwise.
         uint256[] memory batches = new uint256[](2);
         batches[0] = bound(unboundedBatches[0], 1, 5000);
         batches[1] = bound(unboundedBatches[1], 1, 5000);

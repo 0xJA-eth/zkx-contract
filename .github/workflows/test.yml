@@ -1,4 +1,4 @@
-name: test
+name: gmx-test
 
 on: workflow_dispatch
 
@@ -31,4 +31,4 @@ jobs:
       - name: Run Forge tests
         run: |
           forge test -vvv
-        id: test
+        id: gmx-test

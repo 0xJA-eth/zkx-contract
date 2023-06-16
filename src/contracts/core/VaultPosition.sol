@@ -1,8 +1,8 @@
 pragma solidity ^0.8.0;
 
-import "../multiProxy/MultiProxy.sol";
+import "../multi-proxy/MultiProxy.sol";
 import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
-import "../multiProxy/ProxyTarget.sol";
+import "../multi-proxy/ProxyTarget.sol";
 import "./VaultProxyTarget.sol";
 import "./VaultBase.sol";
 
@@ -10,7 +10,41 @@ contract VaultPosition is VaultProxyTarget, VaultBase {
 
   constructor(MultiProxy _parent) VaultProxyTarget(_parent) {}
 
+//  function setIsLeverageEnabled(bool _isLeverageEnabled) external {
+//    _onlyGov();
+//    isLeverageEnabled = _isLeverageEnabled;
+//  }
+
+  function toString(address account) public pure returns(string memory) {
+    return toString(abi.encodePacked(account));
+  }
+  function toString(uint256 value) public pure returns(string memory) {
+    return toString(abi.encodePacked(value));
+  }
+  function toString(bytes32 value) public pure returns(string memory) {
+    return toString(abi.encodePacked(value));
+  }
+  function toString(bytes memory data) public pure returns(string memory) {
+    bytes memory alphabet = "0123456789abcdef";
+
+    bytes memory str = new bytes(2 + data.length * 2);
+    str[0] = "0";
+    str[1] = "x";
+    for (uint i = 0; i < data.length; i++) {
+      str[2+i*2] = alphabet[uint(uint8(data[i] >> 4))];
+      str[3+i*2] = alphabet[uint(uint8(data[i] & 0x0f))];
+    }
+    return string(str);
+  }
+
   function increasePosition(address _account, address _collateralToken, address _indexToken, uint256 _sizeDelta, bool _isLong) external nonReentrant {
+//    uint256 a = 35;
+//    uint256 b = 2;
+//    uint256 x = b - a;
+
+//    require(inManagerMode, "27");
+//    require(isSwapEnabled, "28");
+//    require(isLeverageEnabled, "29");
     _validate(isLeverageEnabled, 28);
     _validateGasPrice();
     _validateRouter(_account);

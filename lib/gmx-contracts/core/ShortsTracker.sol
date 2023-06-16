@@ -2,14 +2,12 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/math/SafeMath.sol";
 
 import "../access/Governable.sol";
 import "./interfaces/IShortsTracker.sol";
 import "./interfaces/IVault.sol";
 
 contract ShortsTracker is Governable, IShortsTracker {
-    using SafeMath for uint256;
 
     event GlobalShortDataUpdated(address indexed token, uint256 globalShortSize, uint256 globalShortAveragePrice);
 

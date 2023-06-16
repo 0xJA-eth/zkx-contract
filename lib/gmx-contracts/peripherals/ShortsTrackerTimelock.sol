@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import "../libraries/math/SafeMath.sol";
 import "../access/Governable.sol";
 import "../core/interfaces/IShortsTracker.sol";
 import "./interfaces/IHandlerTarget.sol";
@@ -8,7 +7,6 @@ import "./interfaces/IHandlerTarget.sol";
 pragma solidity 0.6.12;
 
 contract ShortsTrackerTimelock {
-    using SafeMath for uint256;
 
     uint256 public constant BASIS_POINTS_DIVISOR = 10000;
     uint256 public constant MAX_BUFFER = 5 days;

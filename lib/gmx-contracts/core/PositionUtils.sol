@@ -2,7 +2,6 @@
 
 pragma solidity ^0.6.0;
 
-import "../libraries/math/SafeMath.sol";
 import "../peripherals/interfaces/ITimelock.sol";
 
 import "./interfaces/IVault.sol";
@@ -10,7 +9,6 @@ import "./interfaces/IRouter.sol";
 import "./interfaces/IShortsTracker.sol";
 
 library PositionUtils {
-    using SafeMath for uint256;
 
     uint256 internal constant BASIS_POINTS_DIVISOR = 10000;
 

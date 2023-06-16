@@ -2,12 +2,10 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/math/SafeMath.sol";
 
 import "../core/interfaces/IOrderBook.sol";
 
 contract OrderBookReader {
-    using SafeMath for uint256;
 
     struct Vars {
         uint256 i;
@@ -18,7 +16,7 @@ contract OrderBookReader {
     }
 
     function getIncreaseOrders(
-        address payable _orderBookAddress, 
+        address payable _orderBookAddress,
         address _account,
         uint256[] memory _indices
     ) external view returns (uint256[] memory, address[] memory) {
@@ -60,7 +58,7 @@ contract OrderBookReader {
     }
 
     function getDecreaseOrders(
-        address payable _orderBookAddress, 
+        address payable _orderBookAddress,
         address _account,
         uint256[] memory _indices
     ) external view returns (uint256[] memory, address[] memory) {
@@ -100,7 +98,7 @@ contract OrderBookReader {
     }
 
     function getSwapOrders(
-        address payable _orderBookAddress, 
+        address payable _orderBookAddress,
         address _account,
         uint256[] memory _indices
     ) external view returns (uint256[] memory, address[] memory) {
@@ -117,9 +115,9 @@ contract OrderBookReader {
                 address path0,
                 address path1,
                 address path2,
-                uint256 amountIn, 
-                uint256 minOut, 
-                uint256 triggerRatio, 
+                uint256 amountIn,
+                uint256 minOut,
+                uint256 triggerRatio,
                 bool triggerAboveThreshold,
                 bool shouldUnwrap,
                 // uint256 executionFee

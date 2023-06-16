@@ -2,16 +2,12 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/math/SafeMath.sol";
-import "../libraries/token/IERC20.sol";
-import "../libraries/token/SafeERC20.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
 import "./interfaces/IYieldTracker.sol";
 import "./interfaces/IBaseToken.sol";
 
 contract BaseToken is IERC20, IBaseToken {
-    using SafeMath for uint256;
-    using SafeERC20 for IERC20;
 
     string public name;
     string public symbol;

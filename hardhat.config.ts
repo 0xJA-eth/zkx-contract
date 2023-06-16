@@ -1,4 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
+import "@nomiclabs/hardhat-waffle";
+import "@nomiclabs/hardhat-etherscan";
 import "@matterlabs/hardhat-zksync-solc";
 import "@matterlabs/hardhat-zksync-chai-matchers";
 // import "@nomicfoundation/hardhat-verify";
@@ -7,6 +9,7 @@ import "@matterlabs/hardhat-zksync-verify";
 // import "@matterlabs/hardhat-zksync-vyper";
 import "@matterlabs/hardhat-zksync-deploy";
 // import "@nomicfoundation/hardhat-toolbox";
+import "@typechain/hardhat";
 
 import "hardhat-preprocessor";
 import * as fs from "fs";
@@ -23,6 +26,10 @@ function getRemappings() {
 }
 
 const config: HardhatUserConfig = {
+  mocha: {
+    timeout: 120000,
+  },
+
   zksolc: {
     version: "1.3.10",
     compilerSource: "binary",
@@ -49,11 +56,11 @@ const config: HardhatUserConfig = {
   // },
 
   solidity: {
-    version: "0.8.14",
+    version: "0.8.12",
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200
+        runs: 10
       }
     }
   },
@@ -61,26 +68,32 @@ const config: HardhatUserConfig = {
     // hardhat: {
     // },
     test: {
-      url: "https://testnet.era.zksync.dev", // The testnet RPC URL of zkSync Era network.
+      url: process.env.TESTNET_RPC_URL,
+      accounts: ["0x7726827caac94a7f9e1b160f7ea819f172f7b6f9d2a97f992c38edeab82d4110"],
+      ethNetwork: "http://localhost:8545", // The Ethereum Web3 RPC URL, or the identifier of the network (e.g. `mainnet` or `goerli`)
+      zksync: true,
+      allowUnlimitedContractSize: true
+    },
+    dev: {
+      url: process.env.DEVNET_RPC_URL, // The testnet RPC URL of zkSync Era network.
+      accounts: [process.env.PRIVATE_KEY as string],
       ethNetwork: "goerli", // The Ethereum Web3 RPC URL, or the identifier of the network (e.g. `mainnet` or `goerli`)
       zksync: true,
       // Verification endpoint for Goerli
-      verifyURL: 'https://zksync2-testnet-explorer.zksync.dev/contract_verification'
+      verifyURL: process.env.DEVNET_VERIFY_URL
     },
-    // test: {
-    //   url: process.env["TESTNET_RPC_URL"] as string,
-    //   accounts: [process.env["PRIVATE_KEY"] as string],
-    //   zksync: true
-    // },
-    // main: {
-    //   url: process.env["MAINNET_RPC_URL"] as string,
-    //   accounts: [process.env["PRIVATE_KEY"] as string],
-    //   zksync: true
-    // }
+    main: {
+      url: process.env.MAINNET_RPC_URL as string,
+      accounts: [process.env.PRIVATE_KEY as string],
+      ethNetwork: "mainnet", // The Ethereum Web3 RPC URL, or the identifier of the network (e.g. `mainnet` or `goerli`)
+      zksync: true,
+      // Verification endpoint for Goerli
+      verifyURL: process.env.MAINNET_VERIFY_URL
+    }
   },
   // etherscan: {
   //   customChains: [{
-  //     network: "test",
+  //     network: "gmx-test",
   //     chainId: 280,
   //     urls: {
   //       apiURL: "",
@@ -106,6 +119,10 @@ const config: HardhatUserConfig = {
   paths: {
     sources: "./src",
     cache: "./cache_hardhat",
+  },
+  typechain: {
+    outDir: "typechain",
+    target: "ethers-v6",
   },
 };
 

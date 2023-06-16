@@ -1,0 +1,25 @@
+{
+  "_format": "hh-zksolc-artifact-1",
+  "contractName": "ProxyTarget",
+  "sourceName": "src/contracts/multi-proxy/ProxyTarget.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "parent",
+      "outputs": [
+        {
+          "internalType": "contract MultiProxy",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {},
+  "factoryDeps": {}
+}

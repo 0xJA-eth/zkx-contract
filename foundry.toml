@@ -5,6 +5,8 @@ libs = ["lib"]
 
 remappings = ["@openzeppelin/=lib/openzeppelin-contracts/"]
 
+via_ir = true
+
 [rpc_endpoints]
 testnet = "${TESTNET_RPC_URL}"
 

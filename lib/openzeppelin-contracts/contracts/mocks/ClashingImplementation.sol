@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 /**
  * @dev Implementation contract with a payable admin() function made to clash with TransparentUpgradeableProxy's to
- * test correct functioning of the Transparent Proxy feature.
+ * gmx-test correct functioning of the Transparent Proxy feature.
  */
 contract ClashingImplementation {
     function admin() external payable returns (address) {

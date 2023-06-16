@@ -2,14 +2,12 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/token/IERC20.sol";
-import "../libraries/math/SafeMath.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
 import "../staking/interfaces/IVester.sol";
 import "../staking/interfaces/IRewardTracker.sol";
 
 contract EsGmxBatchSender {
-    using SafeMath for uint256;
 
     address public admin;
     address public esGmx;

@@ -2,16 +2,14 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/math/SafeMath.sol";
-import "../libraries/token/IERC20.sol";
-import "../libraries/utils/ReentrancyGuard.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
 
 import "../amm/interfaces/IPancakeRouter.sol";
 import "./interfaces/IGMT.sol";
 import "../peripherals/interfaces/ITimelockTarget.sol";
 
 contract Treasury is ReentrancyGuard, ITimelockTarget {
-    using SafeMath for uint256;
 
     uint256 constant PRECISION = 1000000;
     uint256 constant BASIS_POINTS_DIVISOR = 10000;

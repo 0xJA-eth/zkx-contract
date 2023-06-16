@@ -99,13 +99,13 @@ interface VmSafe {
     function getDeployedCode(string calldata artifactPath) external view returns (bytes memory runtimeBytecode);
     // Labels an address in call traces
     function label(address account, string calldata newLabel) external;
-    // Using the address that calls the test contract, has the next call (at this call depth only) create a transaction that can later be signed and sent onchain
+    // Using the address that calls the gmx-test contract, has the next call (at this call depth only) create a transaction that can later be signed and sent onchain
     function broadcast() external;
     // Has the next call (at this call depth only) create a transaction with the address provided as the sender that can later be signed and sent onchain
     function broadcast(address signer) external;
     // Has the next call (at this call depth only) create a transaction with the private key provided as the sender that can later be signed and sent onchain
     function broadcast(uint256 privateKey) external;
-    // Using the address that calls the test contract, has all subsequent calls (at this call depth only) create transactions that can later be signed and sent onchain
+    // Using the address that calls the gmx-test contract, has all subsequent calls (at this call depth only) create transactions that can later be signed and sent onchain
     function startBroadcast() external;
     // Has all subsequent calls (at this call depth only) create transactions with the address provided that can later be signed and sent onchain
     function startBroadcast(address signer) external;

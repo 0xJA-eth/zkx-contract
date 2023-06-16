@@ -2,20 +2,16 @@
 
 pragma solidity ^0.6.0;
 
-import "../libraries/math/SafeMath.sol";
-import "../libraries/token/IERC20.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "../tokens/interfaces/IWETH.sol";
-import "../libraries/token/SafeERC20.sol";
 import "../libraries/utils/Address.sol";
-import "../libraries/utils/ReentrancyGuard.sol";
+import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
 
 import "./interfaces/IRouter.sol";
 import "./interfaces/IVault.sol";
 import "./interfaces/IOrderBook.sol";
 
 contract OrderBook is ReentrancyGuard, IOrderBook {
-    using SafeMath for uint256;
-    using SafeERC20 for IERC20;
     using Address for address payable;
 
     uint256 public constant PRICE_PRECISION = 1e30;

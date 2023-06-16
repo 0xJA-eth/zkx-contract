@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import "./interfaces/IVault.sol";
 import "./interfaces/IVaultUtils.sol";
 
-import "./Governable.sol";
+import "../access/Governable.sol";
 
 contract VaultUtils is IVaultUtils, Governable {
 

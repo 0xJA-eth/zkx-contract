@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import "../libraries/math/SafeMath.sol";
 
 import "./interfaces/IVaultPriceFeed.sol";
 import "../oracle/interfaces/IPriceFeed.sol";
@@ -11,7 +10,6 @@ import "../amm/interfaces/IPancakePair.sol";
 pragma solidity 0.6.12;
 
 contract VaultPriceFeed is IVaultPriceFeed {
-    using SafeMath for uint256;
 
     uint256 public constant PRICE_PRECISION = 10 ** 30;
     uint256 public constant ONE_USD = PRICE_PRECISION;

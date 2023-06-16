@@ -2,16 +2,12 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/token/IERC20.sol";
-import "../libraries/math/SafeMath.sol";
-import "../libraries/token/SafeERC20.sol";
-import "../libraries/utils/ReentrancyGuard.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
 
 import "../access/Governable.sol";
 
 contract Bridge is ReentrancyGuard, Governable {
-    using SafeMath for uint256;
-    using SafeERC20 for IERC20;
 
     address public token;
     address public wToken;

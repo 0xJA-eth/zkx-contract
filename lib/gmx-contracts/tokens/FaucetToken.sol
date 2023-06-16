@@ -2,8 +2,7 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/token/IERC20.sol";
-import "../libraries/math/SafeMath.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
 /**
  * @dev Implementation of the {IERC20} interfaces.
@@ -30,7 +29,6 @@ import "../libraries/math/SafeMath.sol";
  * allowances. See {IERC20-approve}.
  */
 contract FaucetToken is IERC20 {
-    using SafeMath for uint256;
 
     uint256 public DROPLET_INTERVAL = 8 hours;
 

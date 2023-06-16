@@ -1,6 +1,6 @@
 pragma solidity ^0.8.0;
 
-import "../multiProxy/MultiProxy.sol";
+import "../multi-proxy/MultiProxy.sol";
 import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
 import "./VaultProxyTarget.sol";
 import "./VaultBase.sol";

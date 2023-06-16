@@ -144,7 +144,6 @@ contract ERC20PermitNoRevertMock is
 }
 
 contract SafeERC20Wrapper is Context {
-    using SafeERC20 for IERC20;
 
     IERC20 private _token;
 

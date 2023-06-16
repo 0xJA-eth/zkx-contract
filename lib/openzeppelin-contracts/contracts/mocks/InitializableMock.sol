@@ -6,7 +6,7 @@ import "../proxy/utils/Initializable.sol";
 
 /**
  * @title InitializableMock
- * @dev This contract is a mock to test initializable functionality
+ * @dev This contract is a mock to gmx-test initializable functionality
  */
 contract InitializableMock is Initializable {
     bool public initializerRan;

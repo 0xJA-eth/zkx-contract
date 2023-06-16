@@ -4,8 +4,8 @@ pragma solidity ^0.8.0;
 
 import "./UUPSUpgradeableMock.sol";
 
-// This contract implements the pre-4.5 UUPS upgrade function with a rollback test.
-// It's used to test that newer UUPS contracts are considered valid upgrades by older UUPS contracts.
+// This contract implements the pre-4.5 UUPS upgrade function with a rollback gmx-test.
+// It's used to gmx-test that newer UUPS contracts are considered valid upgrades by older UUPS contracts.
 contract UUPSUpgradeableLegacyMock is UUPSUpgradeableMock {
     // Inlined from ERC1967Upgrade
     bytes32 private constant _ROLLBACK_SLOT = 0x4910fdfa16fed3260ed0e7147f7cc6da11a60208b5b9406d12a635614ffd9143;
@@ -30,7 +30,7 @@ contract UUPSUpgradeableLegacyMock is UUPSUpgradeableMock {
             Address.functionDelegateCall(newImplementation, data);
         }
 
-        // Perform rollback test if not already in progress
+        // Perform rollback gmx-test if not already in progress
         StorageSlot.BooleanSlot storage rollbackTesting = StorageSlot.getBooleanSlot(_ROLLBACK_SLOT);
         if (!rollbackTesting.value) {
             // Trigger rollback using upgradeTo from the new implementation

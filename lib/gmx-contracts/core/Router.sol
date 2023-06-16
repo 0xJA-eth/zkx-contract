@@ -2,9 +2,7 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/math/SafeMath.sol";
-import "../libraries/token/IERC20.sol";
-import "../libraries/token/SafeERC20.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "../libraries/utils/Address.sol";
 
 import "../tokens/interfaces/IWETH.sol";
@@ -12,8 +10,6 @@ import "./interfaces/IVault.sol";
 import "./interfaces/IRouter.sol";
 
 contract Router is IRouter {
-    using SafeMath for uint256;
-    using SafeERC20 for IERC20;
     using Address for address payable;
 
     address public gov;

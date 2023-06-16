@@ -2,11 +2,11 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\Vault.sol": {
-      "lastModificationDate": 1686392542387,
-      "contentHash": "083ba7767763bca5cc787162d29301ad",
+      "lastModificationDate": 1686916087780,
+      "contentHash": "37ddec97eae8418cf047d01f3492a0d5",
       "sourceName": "src/contracts/core/Vault.sol",
       "solcConfig": {
-        "version": "0.8.14",
+        "version": "0.8.12",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -26,7 +26,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363836333936373639333230"
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
             }
           }
         },
@@ -44,10 +44,13 @@
         }
       },
       "imports": [
-        "../multiProxy/MultiProxy.sol",
-        "../multiProxy/MultiProxy.sol",
         "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
-        "../../interfaces/IVault.sol"
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../multi-proxy/MultiProxy.sol",
+        "./interfaces/IVault.sol",
+        "./interfaces/IVaultPriceFeed.sol",
+        "./VaultBase.sol",
+        "../tokens/interfaces/IUSDG.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -56,12 +59,12 @@
         "Vault"
       ]
     },
-    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\multiProxy\\MultiProxy.sol": {
-      "lastModificationDate": 1686391528275,
-      "contentHash": "7dfa8cb64f6986cbae063247e2fd39d5",
-      "sourceName": "src/contracts/multiProxy/MultiProxy.sol",
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\lib\\openzeppelin-contracts\\contracts\\security\\ReentrancyGuard.sol": {
+      "lastModificationDate": 1686391908833,
+      "contentHash": "a8e2d1c30042f64ed89c9d4157eb6cb9",
+      "sourceName": "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
       "solcConfig": {
-        "version": "0.8.14",
+        "version": "0.8.12",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -81,7 +84,57 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363836333936373639333230"
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ReentrancyGuard"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\VaultUtils.sol": {
+      "lastModificationDate": 1686671474893,
+      "contentHash": "db25724b8fc02c560ebc49171cc4f26d",
+      "sourceName": "src/contracts/core/VaultUtils.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
             }
           }
         },
@@ -99,21 +152,23 @@
         }
       },
       "imports": [
-        "./BaseMultiProxy.sol"
+        "./interfaces/IVault.sol",
+        "./interfaces/IVaultUtils.sol",
+        "../access/Governable.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
       ],
       "artifacts": [
-        "MultiProxy"
+        "VaultUtils"
       ]
     },
-    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\interfaces\\IVault.sol": {
-      "lastModificationDate": 1686392479184,
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\interfaces\\IVault.sol": {
+      "lastModificationDate": 1686895475088,
       "contentHash": "3cb12a729dcae84d28c99dbf574468b6",
-      "sourceName": "src/interfaces/IVault.sol",
+      "sourceName": "src/contracts/core/interfaces/IVault.sol",
       "solcConfig": {
-        "version": "0.8.14",
+        "version": "0.8.12",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -133,7 +188,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363836333936373639333230"
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
             }
           }
         },
@@ -160,112 +215,12 @@
         "IVault"
       ]
     },
-    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\lib\\openzeppelin-contracts\\contracts\\security\\ReentrancyGuard.sol": {
-      "lastModificationDate": 1686391908833,
-      "contentHash": "a8e2d1c30042f64ed89c9d4157eb6cb9",
-      "sourceName": "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
-      "solcConfig": {
-        "version": "0.8.14",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "mode": "3"
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "libraries": {
-            "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363836333936373639333230"
-            }
-          }
-        },
-        "zksolc": {
-          "version": "1.3.10",
-          "compilerSource": "binary",
-          "settings": {
-            "optimizer": {
-              "enabled": true,
-              "mode": "3"
-            },
-            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
-            "experimental": {}
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ReentrancyGuard"
-      ]
-    },
-    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\multiProxy\\BaseMultiProxy.sol": {
-      "lastModificationDate": 1686391218086,
-      "contentHash": "2df467231f6add5e86e7f4c9df5f2947",
-      "sourceName": "src/contracts/multiProxy/BaseMultiProxy.sol",
-      "solcConfig": {
-        "version": "0.8.14",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "mode": "3"
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "libraries": {
-            "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363836333936373639333230"
-            }
-          }
-        },
-        "zksolc": {
-          "version": "1.3.10",
-          "compilerSource": "binary",
-          "settings": {
-            "optimizer": {
-              "enabled": true,
-              "mode": "3"
-            },
-            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
-            "experimental": {}
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "BaseMultiProxy"
-      ]
-    },
-    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\interfaces\\IVaultUtils.sol": {
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\interfaces\\IVaultUtils.sol": {
       "lastModificationDate": 1686392466830,
       "contentHash": "8360a1127cc78669f307bb20ce973f9d",
-      "sourceName": "src/interfaces/IVaultUtils.sol",
+      "sourceName": "src/contracts/core/interfaces/IVaultUtils.sol",
       "solcConfig": {
-        "version": "0.8.14",
+        "version": "0.8.12",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -285,7 +240,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363836333936373639333230"
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
             }
           }
         },
@@ -310,12 +265,12 @@
         "IVaultUtils"
       ]
     },
-    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\multiProxy\\ProxyTarget.sol": {
-      "lastModificationDate": 1686391441021,
-      "contentHash": "d72f8604f85a4ff939741b21cb2ea429",
-      "sourceName": "src/contracts/multiProxy/ProxyTarget.sol",
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\VaultBase.sol": {
+      "lastModificationDate": 1686943425326,
+      "contentHash": "db5babf41ec614651796d475d38888cb",
+      "sourceName": "src/contracts/core/VaultBase.sol",
       "solcConfig": {
-        "version": "0.8.14",
+        "version": "0.8.12",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -335,7 +290,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363836333936373639333230"
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
             }
           }
         },
@@ -353,7 +308,6099 @@
         }
       },
       "imports": [
-        "./BaseMultiProxy.sol",
+        "../multi-proxy/MultiProxy.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "./interfaces/IVaultUtils.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "VaultBase"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\lib\\openzeppelin-contracts\\contracts\\token\\ERC20\\IERC20.sol": {
+      "lastModificationDate": 1686391907639,
+      "contentHash": "ad7c2d0af148c8f9f097d65deeb4da6b",
+      "sourceName": "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\VaultUSDG.sol": {
+      "lastModificationDate": 1686896368544,
+      "contentHash": "a7ad25fb26c249bf13b6fb4c2f3f9824",
+      "sourceName": "src/contracts/core/VaultUSDG.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../multi-proxy/MultiProxy.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./VaultProxyTarget.sol",
+        "./VaultBase.sol",
+        "../tokens/interfaces/IUSDG.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "VaultUSDG"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\interfaces\\IUSDG.sol": {
+      "lastModificationDate": 1686599250187,
+      "contentHash": "f23afb94de138c1bd2ecab6cf9e53f5f",
+      "sourceName": "src/contracts/tokens/interfaces/IUSDG.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IUSDG"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\VaultProxyTarget.sol": {
+      "lastModificationDate": 1686895472221,
+      "contentHash": "3ff1c8f40dc86ca2ce4b29d9614bced4",
+      "sourceName": "src/contracts/core/VaultProxyTarget.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "../multi-proxy/ProxyTarget.sol",
+        "../multi-proxy/MultiProxy.sol",
+        "./interfaces/IVault.sol",
+        "./Vault.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "VaultProxyTarget"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\interfaces\\IVaultPriceFeed.sol": {
+      "lastModificationDate": 1686598656552,
+      "contentHash": "a474f3e49acd37cace70d49aea27bc9c",
+      "sourceName": "src/contracts/core/interfaces/IVaultPriceFeed.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IVaultPriceFeed"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\VaultPosition.sol": {
+      "lastModificationDate": 1686943593020,
+      "contentHash": "0bbcbdfbf78a8868e3c14e335f54a3d8",
+      "sourceName": "src/contracts/core/VaultPosition.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../multi-proxy/MultiProxy.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "../multi-proxy/ProxyTarget.sol",
+        "./VaultProxyTarget.sol",
+        "./VaultBase.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "VaultPosition"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\access\\Governable.sol": {
+      "lastModificationDate": 1686671474793,
+      "contentHash": "dd341c403117f16e659a5dedb42ecc88",
+      "sourceName": "src/contracts/access/Governable.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Governable"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\Bridge.sol": {
+      "lastModificationDate": 1686671474784,
+      "contentHash": "55f58b41c706f1113f749bf2acb54450",
+      "sourceName": "src/contracts/tokens/Bridge.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Bridge"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\YieldTracker.sol": {
+      "lastModificationDate": 1686652324863,
+      "contentHash": "290e063c815aa46266b1d5fc7219c823",
+      "sourceName": "src/contracts/tokens/YieldTracker.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./interfaces/IDistributor.sol",
+        "./interfaces/IYieldTracker.sol",
+        "./interfaces/IYieldToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "YieldTracker"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\interfaces\\IDistributor.sol": {
+      "lastModificationDate": 1686651935159,
+      "contentHash": "015a31073555b34b7702090193918be6",
+      "sourceName": "src/contracts/tokens/interfaces/IDistributor.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IDistributor"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\interfaces\\IYieldTracker.sol": {
+      "lastModificationDate": 1686651935095,
+      "contentHash": "a5c93d115fc315781f71574d8808f7e6",
+      "sourceName": "src/contracts/tokens/interfaces/IYieldTracker.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IYieldTracker"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\interfaces\\IYieldToken.sol": {
+      "lastModificationDate": 1686651935109,
+      "contentHash": "2352569b172078d47a20edb1f080c52c",
+      "sourceName": "src/contracts/tokens/interfaces/IYieldToken.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IYieldToken"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\YieldFarm.sol": {
+      "lastModificationDate": 1686652324885,
+      "contentHash": "782bc51be0d5d3da783321ce411218ef",
+      "sourceName": "src/contracts/tokens/YieldFarm.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./YieldToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "YieldFarm"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\YieldToken.sol": {
+      "lastModificationDate": 1686652324871,
+      "contentHash": "d1d621e3eed105fa79d96fd7e0f1b727",
+      "sourceName": "src/contracts/tokens/YieldToken.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "./interfaces/IYieldTracker.sol",
+        "./interfaces/IYieldToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "YieldToken"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\BaseToken.sol": {
+      "lastModificationDate": 1686652324867,
+      "contentHash": "457327d67347975071179ff2aeca409a",
+      "sourceName": "src/contracts/tokens/BaseToken.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "./interfaces/IYieldTracker.sol",
+        "./interfaces/IBaseToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "BaseToken"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\interfaces\\IBaseToken.sol": {
+      "lastModificationDate": 1686651935174,
+      "contentHash": "2a68122de0ed8709dc59f98518ec9887",
+      "sourceName": "src/contracts/tokens/interfaces/IBaseToken.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IBaseToken"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\MintableBaseToken.sol": {
+      "lastModificationDate": 1686651935178,
+      "contentHash": "1fcf9da3b2fcefd711d898fd0c8ae6cf",
+      "sourceName": "src/contracts/tokens/MintableBaseToken.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./BaseToken.sol",
+        "./interfaces/IMintable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "MintableBaseToken"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\interfaces\\IMintable.sol": {
+      "lastModificationDate": 1686651935135,
+      "contentHash": "1a1a8cd351151b0e5d433e9dbdf85bb6",
+      "sourceName": "src/contracts/tokens/interfaces/IMintable.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IMintable"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\SnapshotToken.sol": {
+      "lastModificationDate": 1686651935154,
+      "contentHash": "dcba818a9164931f2e903134c2a05f12",
+      "sourceName": "src/contracts/tokens/SnapshotToken.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./MintableBaseToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "SnapshotToken"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\Vester.sol": {
+      "lastModificationDate": 1686711940369,
+      "contentHash": "af76865949cfffb514c21d8b0d74454a",
+      "sourceName": "src/contracts/staking/Vester.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./interfaces/IRewardTracker.sol",
+        "./interfaces/IVester.sol",
+        "../tokens/interfaces/IMintable.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Vester"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\interfaces\\IRewardTracker.sol": {
+      "lastModificationDate": 1686671474657,
+      "contentHash": "73c5740837c83b24547d48808a6a0077",
+      "sourceName": "src/contracts/staking/interfaces/IRewardTracker.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IRewardTracker"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\interfaces\\IVester.sol": {
+      "lastModificationDate": 1686671474726,
+      "contentHash": "70543df7a0697bc1e60b255bede6fdaf",
+      "sourceName": "src/contracts/staking/interfaces/IVester.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IVester"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\RewardRouterV2.sol": {
+      "lastModificationDate": 1686711818739,
+      "contentHash": "04b972f680b5675d617cbfb40b34f522",
+      "sourceName": "src/contracts/staking/RewardRouterV2.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "../lib/Address.sol",
+        "./interfaces/IRewardTracker.sol",
+        "./interfaces/IRewardRouterV2.sol",
+        "./interfaces/IVester.sol",
+        "../tokens/interfaces/IMintable.sol",
+        "../tokens/interfaces/IWETH.sol",
+        "../core/interfaces/IGlpManager.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "RewardRouterV2"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\lib\\Address.sol": {
+      "lastModificationDate": 1686712543642,
+      "contentHash": "45d61d8d4e31d6ee9d27c40164ad8800",
+      "sourceName": "src/contracts/lib/Address.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Address"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\interfaces\\IWETH.sol": {
+      "lastModificationDate": 1686651935104,
+      "contentHash": "27d9e242774215a76eacc520c49eaae4",
+      "sourceName": "src/contracts/tokens/interfaces/IWETH.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IWETH"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\interfaces\\IGlpManager.sol": {
+      "lastModificationDate": 1686710606904,
+      "contentHash": "5fa88f7da807a32c8cee6ba46a582657",
+      "sourceName": "src/contracts/core/interfaces/IGlpManager.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./IVault.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IGlpManager"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\interfaces\\IRewardRouterV2.sol": {
+      "lastModificationDate": 1686671474737,
+      "contentHash": "1add0f2ff5fc732a382906153b4a1814",
+      "sourceName": "src/contracts/staking/interfaces/IRewardRouterV2.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IRewardRouterV2"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\Timelock.sol": {
+      "lastModificationDate": 1686710289247,
+      "contentHash": "c75726ed2ab01b1f5e5f1cea96335b33",
+      "sourceName": "src/contracts/peripherals/Timelock.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/ITimelockTarget.sol",
+        "./interfaces/ITimelock.sol",
+        "./interfaces/IHandlerTarget.sol",
+        "../access/interfaces/IAdmin.sol",
+        "../core/interfaces/IVault.sol",
+        "../core/interfaces/IVaultUtils.sol",
+        "../core/interfaces/IGlpManager.sol",
+        "../referrals/interfaces/IReferralStorage.sol",
+        "../tokens/interfaces/IYieldToken.sol",
+        "../tokens/interfaces/IBaseToken.sol",
+        "../tokens/interfaces/IMintable.sol",
+        "../tokens/interfaces/IUSDG.sol",
+        "../staking/interfaces/IVester.sol",
+        "../staking/interfaces/IRewardRouterV2.sol",
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Timelock"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\access\\interfaces\\IAdmin.sol": {
+      "lastModificationDate": 1686671474819,
+      "contentHash": "3173f0a9f2719e8b76dd0c2965bdd8de",
+      "sourceName": "src/contracts/access/interfaces/IAdmin.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAdmin"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\referrals\\interfaces\\IReferralStorage.sol": {
+      "lastModificationDate": 1686671474653,
+      "contentHash": "451e25aeb5a9ca793bc0a7bc5aaeb704",
+      "sourceName": "src/contracts/referrals/interfaces/IReferralStorage.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IReferralStorage"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\interfaces\\ITimelockTarget.sol": {
+      "lastModificationDate": 1686671474693,
+      "contentHash": "7143fa6a7b03596156db126daf22d1d2",
+      "sourceName": "src/contracts/peripherals/interfaces/ITimelockTarget.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ITimelockTarget"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\interfaces\\ITimelock.sol": {
+      "lastModificationDate": 1686671474709,
+      "contentHash": "77dab651f4223da00e56dd85052c2811",
+      "sourceName": "src/contracts/peripherals/interfaces/ITimelock.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ITimelock"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\interfaces\\IHandlerTarget.sol": {
+      "lastModificationDate": 1686671474845,
+      "contentHash": "cfabd0e34989c9d86d462b43dc8594e5",
+      "sourceName": "src/contracts/peripherals/interfaces/IHandlerTarget.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IHandlerTarget"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\ShortsTrackerTimelock.sol": {
+      "lastModificationDate": 1686710289229,
+      "contentHash": "1bfd856c91bb91c6db886972524b0162",
+      "sourceName": "src/contracts/peripherals/ShortsTrackerTimelock.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../access/Governable.sol",
+        "../core/interfaces/IShortsTracker.sol",
+        "./interfaces/IHandlerTarget.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ShortsTrackerTimelock"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\interfaces\\IShortsTracker.sol": {
+      "lastModificationDate": 1686710606908,
+      "contentHash": "035998f749b76604960b5b3172d80ec8",
+      "sourceName": "src/contracts/core/interfaces/IShortsTracker.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IShortsTracker"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\ShortsTracker.sol": {
+      "lastModificationDate": 1686711497720,
+      "contentHash": "91afc74bdbe05f17de80a2ad62d44b1e",
+      "sourceName": "src/contracts/core/ShortsTracker.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../access/Governable.sol",
+        "./interfaces/IShortsTracker.sol",
+        "./interfaces/IVault.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ShortsTracker"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\VaultReader.sol": {
+      "lastModificationDate": 1686671474926,
+      "contentHash": "810ca9e0af48973f6e62ba158d916053",
+      "sourceName": "src/contracts/peripherals/VaultReader.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../core/interfaces/IVault.sol",
+        "../core/interfaces/IVaultPriceFeed.sol",
+        "../core/interfaces/IBasePositionManager.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "VaultReader"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\interfaces\\IBasePositionManager.sol": {
+      "lastModificationDate": 1686710606888,
+      "contentHash": "c96c1dba47efb226c9e5db3c8babe836",
+      "sourceName": "src/contracts/core/interfaces/IBasePositionManager.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IBasePositionManager"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\BasePositionManager.sol": {
+      "lastModificationDate": 1686711818743,
+      "contentHash": "dacf8bbad2853baa936390b3b7cbdb54",
+      "sourceName": "src/contracts/core/BasePositionManager.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../tokens/interfaces/IWETH.sol",
+        "../lib/Address.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./interfaces/IRouter.sol",
+        "./interfaces/IVault.sol",
+        "./interfaces/IShortsTracker.sol",
+        "./interfaces/IOrderBook.sol",
+        "./interfaces/IBasePositionManager.sol",
+        "../access/Governable.sol",
+        "../peripherals/interfaces/ITimelock.sol",
+        "../referrals/interfaces/IReferralStorage.sol",
+        "./PositionUtils.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "BasePositionManager"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\interfaces\\IRouter.sol": {
+      "lastModificationDate": 1686710606882,
+      "contentHash": "59000a651756a9f1ba7a5d78793ddd0f",
+      "sourceName": "src/contracts/core/interfaces/IRouter.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IRouter"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\interfaces\\IOrderBook.sol": {
+      "lastModificationDate": 1686710606895,
+      "contentHash": "94c84751357eef45337082a7a366a369",
+      "sourceName": "src/contracts/core/interfaces/IOrderBook.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IOrderBook"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\PositionUtils.sol": {
+      "lastModificationDate": 1686714080536,
+      "contentHash": "28f03696e32b07234dedfb6a55cd6828",
+      "sourceName": "src/contracts/core/PositionUtils.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../peripherals/interfaces/ITimelock.sol",
+        "./interfaces/IVault.sol",
+        "./interfaces/IRouter.sol",
+        "./interfaces/IShortsTracker.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PositionUtils"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\PositionRouter.sol": {
+      "lastModificationDate": 1686711818763,
+      "contentHash": "e7b89519a83c63267f578513ef81c4d6",
+      "sourceName": "src/contracts/core/PositionRouter.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IRouter.sol",
+        "./interfaces/IVault.sol",
+        "./interfaces/IPositionRouter.sol",
+        "./interfaces/IPositionRouterCallbackReceiver.sol",
+        "../lib/Address.sol",
+        "../peripherals/interfaces/ITimelock.sol",
+        "./BasePositionManager.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PositionRouter"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\interfaces\\IPositionRouterCallbackReceiver.sol": {
+      "lastModificationDate": 1686711541768,
+      "contentHash": "4447024a3258408c2f519162ff860384",
+      "sourceName": "src/contracts/core/interfaces/IPositionRouterCallbackReceiver.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IPositionRouterCallbackReceiver"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\interfaces\\IPositionRouter.sol": {
+      "lastModificationDate": 1686710606899,
+      "contentHash": "05b5a7cb9ebf5f9e3b2a414263c0aa6a",
+      "sourceName": "src/contracts/core/interfaces/IPositionRouter.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IPositionRouter"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\PositionRouterReader.sol": {
+      "lastModificationDate": 1686671474858,
+      "contentHash": "d353c51ad06786055fb44156019c4273",
+      "sourceName": "src/contracts/peripherals/PositionRouterReader.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../core/PositionRouter.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PositionRouterReader"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\oracle\\FastPriceFeed.sol": {
+      "lastModificationDate": 1686712240538,
+      "contentHash": "09c5f1a37406d86a9b9987a5d5d499d9",
+      "sourceName": "src/contracts/oracle/FastPriceFeed.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/ISecondaryPriceFeed.sol",
+        "./interfaces/IFastPriceFeed.sol",
+        "./interfaces/IFastPriceEvents.sol",
+        "../core/interfaces/IVaultPriceFeed.sol",
+        "../core/interfaces/IPositionRouter.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "FastPriceFeed"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\oracle\\interfaces\\ISecondaryPriceFeed.sol": {
+      "lastModificationDate": 1686671218811,
+      "contentHash": "51ea4db4843b2ff3794deef976090a08",
+      "sourceName": "src/contracts/oracle/interfaces/ISecondaryPriceFeed.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ISecondaryPriceFeed"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\oracle\\interfaces\\IFastPriceFeed.sol": {
+      "lastModificationDate": 1686671218823,
+      "contentHash": "2a309e7184bf46c41a6cbde5be8abc43",
+      "sourceName": "src/contracts/oracle/interfaces/IFastPriceFeed.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IFastPriceFeed"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\oracle\\interfaces\\IFastPriceEvents.sol": {
+      "lastModificationDate": 1686671218840,
+      "contentHash": "4e2e7970632ae850d5d81cdfe857cf03",
+      "sourceName": "src/contracts/oracle/interfaces/IFastPriceEvents.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IFastPriceEvents"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\oracle\\FastPriceEvents.sol": {
+      "lastModificationDate": 1686709580457,
+      "contentHash": "d45801492717afc307af759be55153de",
+      "sourceName": "src/contracts/oracle/FastPriceEvents.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IFastPriceEvents.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "FastPriceEvents"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\PriceFeedTimelock.sol": {
+      "lastModificationDate": 1686710289215,
+      "contentHash": "5230f21c2b88b94574857743268039ea",
+      "sourceName": "src/contracts/peripherals/PriceFeedTimelock.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/ITimelockTarget.sol",
+        "./interfaces/IHandlerTarget.sol",
+        "../access/interfaces/IAdmin.sol",
+        "../core/interfaces/IVaultPriceFeed.sol",
+        "../oracle/interfaces/IFastPriceFeed.sol",
+        "../referrals/interfaces/IReferralStorage.sol",
+        "../tokens/interfaces/IYieldToken.sol",
+        "../tokens/interfaces/IBaseToken.sol",
+        "../tokens/interfaces/IMintable.sol",
+        "../tokens/interfaces/IUSDG.sol",
+        "../staking/interfaces/IVester.sol",
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PriceFeedTimelock"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\GmxTimelock.sol": {
+      "lastModificationDate": 1686710289233,
+      "contentHash": "568ecb65ae806c1f3a1399f2dc3f2447",
+      "sourceName": "src/contracts/peripherals/GmxTimelock.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/ITimelockTarget.sol",
+        "./interfaces/IGmxTimelock.sol",
+        "./interfaces/IHandlerTarget.sol",
+        "../access/interfaces/IAdmin.sol",
+        "../core/interfaces/IVault.sol",
+        "../core/interfaces/IVaultUtils.sol",
+        "../core/interfaces/IVaultPriceFeed.sol",
+        "../core/interfaces/IRouter.sol",
+        "../tokens/interfaces/IYieldToken.sol",
+        "../tokens/interfaces/IBaseToken.sol",
+        "../tokens/interfaces/IMintable.sol",
+        "../tokens/interfaces/IUSDG.sol",
+        "../staking/interfaces/IVester.sol",
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "GmxTimelock"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\interfaces\\IGmxTimelock.sol": {
+      "lastModificationDate": 1686671474854,
+      "contentHash": "07cc4e17c03af88be0c208f3b2215ee7",
+      "sourceName": "src/contracts/peripherals/interfaces/IGmxTimelock.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IGmxTimelock"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\USDG.sol": {
+      "lastModificationDate": 1686651935144,
+      "contentHash": "05ac289d75f381f5b9d19405204b907a",
+      "sourceName": "src/contracts/tokens/USDG.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IUSDG.sol",
+        "./YieldToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "USDG"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\Reader.sol": {
+      "lastModificationDate": 1686710289199,
+      "contentHash": "ee3f24ce6439c77e80a1d744af732af4",
+      "sourceName": "src/contracts/peripherals/Reader.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../core/interfaces/IVault.sol",
+        "../core/interfaces/IVaultPriceFeed.sol",
+        "../tokens/interfaces/IYieldTracker.sol",
+        "../tokens/interfaces/IYieldToken.sol",
+        "../amm/interfaces/IPancakeFactory.sol",
+        "../staking/interfaces/IVester.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Reader"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\amm\\interfaces\\IPancakeFactory.sol": {
+      "lastModificationDate": 1686671474910,
+      "contentHash": "ee34cd3bdb8fc8d902214017e4683c40",
+      "sourceName": "src/contracts/amm/interfaces/IPancakeFactory.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IPancakeFactory"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\amm\\PancakeFactory.sol": {
+      "lastModificationDate": 1686671474745,
+      "contentHash": "cc1e6aec3d84acb033a8d7190b807b24",
+      "sourceName": "src/contracts/amm/PancakeFactory.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPancakeFactory.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PancakeFactory"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\VaultPriceFeed.sol": {
+      "lastModificationDate": 1686711497738,
+      "contentHash": "a94e17e1f99fc8f9e8b822722e679d1b",
+      "sourceName": "src/contracts/core/VaultPriceFeed.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IVaultPriceFeed.sol",
+        "../oracle/interfaces/IPriceFeed.sol",
+        "../oracle/interfaces/ISecondaryPriceFeed.sol",
+        "../oracle/interfaces/IChainlinkFlags.sol",
+        "../amm/interfaces/IPancakePair.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "VaultPriceFeed"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\oracle\\interfaces\\IPriceFeed.sol": {
+      "lastModificationDate": 1686671218829,
+      "contentHash": "4d1b39c8f3eeec86391db70da02620f6",
+      "sourceName": "src/contracts/oracle/interfaces/IPriceFeed.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IPriceFeed"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\oracle\\interfaces\\IChainlinkFlags.sol": {
+      "lastModificationDate": 1686671218805,
+      "contentHash": "1d8166d37bcf36f177f9c08f592dbaf8",
+      "sourceName": "src/contracts/oracle/interfaces/IChainlinkFlags.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IChainlinkFlags"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\amm\\interfaces\\IPancakePair.sol": {
+      "lastModificationDate": 1686671304898,
+      "contentHash": "68cf4942e69e9e5ddf3f6f86f2d57e8f",
+      "sourceName": "src/contracts/amm/interfaces/IPancakePair.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IPancakePair"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\amm\\PancakePair.sol": {
+      "lastModificationDate": 1686671474878,
+      "contentHash": "a52a7c449c36607ab57ebabdd3ac3b01",
+      "sourceName": "src/contracts/amm/PancakePair.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPancakePair.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PancakePair"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\oracle\\PriceFeed.sol": {
+      "lastModificationDate": 1686671218798,
+      "contentHash": "620021d5a924ab73666b18a71aa0ec60",
+      "sourceName": "src/contracts/oracle/PriceFeed.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPriceFeed.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PriceFeed"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\GlpManager.sol": {
+      "lastModificationDate": 1686711818727,
+      "contentHash": "89d4fba0d57b71e4c7241919b0393c49",
+      "sourceName": "src/contracts/core/GlpManager.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./interfaces/IVault.sol",
+        "./interfaces/IGlpManager.sol",
+        "./interfaces/IShortsTracker.sol",
+        "../tokens/interfaces/IUSDG.sol",
+        "../tokens/interfaces/IMintable.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "GlpManager"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\StakedGlpMigrator.sol": {
+      "lastModificationDate": 1686709594704,
+      "contentHash": "3db9838d89f7b10ef6619bc1c93aed6f",
+      "sourceName": "src/contracts/staking/StakedGlpMigrator.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../core/interfaces/IGlpManager.sol",
+        "./interfaces/IRewardTracker.sol",
+        "./interfaces/IRewardTracker.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "StakedGlpMigrator"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\StakeManager.sol": {
+      "lastModificationDate": 1686671474901,
+      "contentHash": "58193407ee22d9577ecb178eae6b8c8d",
+      "sourceName": "src/contracts/staking/StakeManager.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IRewardTracker.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "StakeManager"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\StakedGlp.sol": {
+      "lastModificationDate": 1686710289195,
+      "contentHash": "487896a143f028b7e007cb7c39a7a810",
+      "sourceName": "src/contracts/staking/StakedGlp.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../core/interfaces/IGlpManager.sol",
+        "./interfaces/IRewardTracker.sol",
+        "./interfaces/IRewardTracker.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "StakedGlp"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\RewardTracker.sol": {
+      "lastModificationDate": 1686711818759,
+      "contentHash": "e79d2827ceba57db2c57003583d2e5c8",
+      "sourceName": "src/contracts/staking/RewardTracker.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./interfaces/IRewardDistributor.sol",
+        "./interfaces/IRewardTracker.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "RewardTracker"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\interfaces\\IRewardDistributor.sol": {
+      "lastModificationDate": 1686671474750,
+      "contentHash": "85e47c7b5037450058314f629cd6d295",
+      "sourceName": "src/contracts/staking/interfaces/IRewardDistributor.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IRewardDistributor"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\RewardDistributor.sol": {
+      "lastModificationDate": 1686711818723,
+      "contentHash": "1f8d087afac65eb1fc8b6b4dbfbf666b",
+      "sourceName": "src/contracts/staking/RewardDistributor.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./interfaces/IRewardDistributor.sol",
+        "./interfaces/IRewardTracker.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "RewardDistributor"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\BonusDistributor.sol": {
+      "lastModificationDate": 1686711818747,
+      "contentHash": "36f1768b507717b558014dbc502693b5",
+      "sourceName": "src/contracts/staking/BonusDistributor.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./interfaces/IRewardDistributor.sol",
+        "./interfaces/IRewardTracker.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "BonusDistributor"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\RewardRouter.sol": {
+      "lastModificationDate": 1686711818751,
+      "contentHash": "3e56b5aeaf9eb923bbbe9ac1a41b985b",
+      "sourceName": "src/contracts/staking/RewardRouter.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "../lib/Address.sol",
+        "./interfaces/IRewardTracker.sol",
+        "../tokens/interfaces/IMintable.sol",
+        "../tokens/interfaces/IWETH.sol",
+        "../core/interfaces/IGlpManager.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "RewardRouter"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\Router.sol": {
+      "lastModificationDate": 1686711818766,
+      "contentHash": "f687742098f2fc305e383130611e9f39",
+      "sourceName": "src/contracts/core/Router.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../lib/Address.sol",
+        "../tokens/interfaces/IWETH.sol",
+        "./interfaces/IVault.sol",
+        "./interfaces/IRouter.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Router"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\referrals\\ReferralStorage.sol": {
+      "lastModificationDate": 1686710467534,
+      "contentHash": "d33f045991d7b1fae014b093dfc61b6a",
+      "sourceName": "src/contracts/referrals/ReferralStorage.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../access/Governable.sol",
+        "../peripherals/interfaces/ITimelock.sol",
+        "./interfaces/IReferralStorage.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ReferralStorage"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\referrals\\ReferralReader.sol": {
+      "lastModificationDate": 1686671474788,
+      "contentHash": "5129df7143e3131d5dc5b7b9db42b58f",
+      "sourceName": "src/contracts/referrals/ReferralReader.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IReferralStorage.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ReferralReader"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\PositionManager.sol": {
+      "lastModificationDate": 1686711818770,
+      "contentHash": "7288c0068db7c86fc719254416af7d6d",
+      "sourceName": "src/contracts/core/PositionManager.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IRouter.sol",
+        "./interfaces/IVault.sol",
+        "./interfaces/IOrderBook.sol",
+        "../peripherals/interfaces/ITimelock.sol",
+        "./BasePositionManager.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PositionManager"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\OrderBookReader.sol": {
+      "lastModificationDate": 1686709594681,
+      "contentHash": "ff51ae74eb3b5cb1b5047927f2a25c8b",
+      "sourceName": "src/contracts/peripherals/OrderBookReader.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../core/interfaces/IOrderBook.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "OrderBookReader"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\OrderBook.sol": {
+      "lastModificationDate": 1686712338571,
+      "contentHash": "6b314cc1b8be45111ed999e7bfa7f1ef",
+      "sourceName": "src/contracts/core/OrderBook.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../tokens/interfaces/IWETH.sol",
+        "../lib/Address.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./interfaces/IRouter.sol",
+        "./interfaces/IVault.sol",
+        "./interfaces/IOrderBook.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "OrderBook"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\access\\TokenManager.sol": {
+      "lastModificationDate": 1686709580300,
+      "contentHash": "154c0b4b9b6053178e75f6645ba2dcee",
+      "sourceName": "src/contracts/access/TokenManager.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "../peripherals/interfaces/ITimelock.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TokenManager"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\lib\\openzeppelin-contracts\\contracts\\token\\ERC721\\IERC721.sol": {
+      "lastModificationDate": 1686391907885,
+      "contentHash": "eb7e61db29f31d88b3c1cef1b063d338",
+      "sourceName": "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../utils/introspection/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC721"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\lib\\openzeppelin-contracts\\contracts\\utils\\introspection\\IERC165.sol": {
+      "lastModificationDate": 1686391908439,
+      "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
+      "sourceName": "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC165"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gmx\\GmxFloor.sol": {
+      "lastModificationDate": 1686711818735,
+      "contentHash": "49fa3dc92f150a64142eeb5cc486ef15",
+      "sourceName": "src/contracts/gmx/GmxFloor.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "../tokens/interfaces/IMintable.sol",
+        "../access/TokenManager.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "GmxFloor"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\RewardReader.sol": {
+      "lastModificationDate": 1686709594650,
+      "contentHash": "2c9f51a025bd1b26da204af9af30fa22",
+      "sourceName": "src/contracts/peripherals/RewardReader.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../staking/interfaces/IVester.sol",
+        "../staking/interfaces/IRewardTracker.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "RewardReader"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\EsGmxBatchSender.sol": {
+      "lastModificationDate": 1686711877118,
+      "contentHash": "ab11a7fd45e535235e62abf6eff68905",
+      "sourceName": "src/contracts/peripherals/EsGmxBatchSender.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../staking/interfaces/IVester.sol",
+        "../staking/interfaces/IRewardTracker.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "EsGmxBatchSender"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\staking\\GlpBalance.sol": {
+      "lastModificationDate": 1686710289191,
+      "contentHash": "4421df3e52f01b73c24cf08a5431f780",
+      "sourceName": "src/contracts/staking/GlpBalance.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../core/interfaces/IGlpManager.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "GlpBalance"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gambit-token\\Treasury.sol": {
+      "lastModificationDate": 1686710289175,
+      "contentHash": "b6c90778d613beacbd18b48a168632b9",
+      "sourceName": "src/contracts/gambit-token/Treasury.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "../amm/interfaces/IPancakeRouter.sol",
+        "./interfaces/IGMT.sol",
+        "../peripherals/interfaces/ITimelockTarget.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Treasury"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\amm\\interfaces\\IPancakeRouter.sol": {
+      "lastModificationDate": 1686671474836,
+      "contentHash": "b75473b1539d48c48d5653b4ac6ec781",
+      "sourceName": "src/contracts/amm/interfaces/IPancakeRouter.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IPancakeRouter"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gambit-token\\interfaces\\IGMT.sol": {
+      "lastModificationDate": 1686671474758,
+      "contentHash": "5a40743986e9a34031941ea4590eb2a0",
+      "sourceName": "src/contracts/gambit-token/interfaces/IGMT.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IGMT"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gambit-token\\GMT.sol": {
+      "lastModificationDate": 1686709892926,
+      "contentHash": "333d865233cf0775ebb00a26bae9b0cd",
+      "sourceName": "src/contracts/gambit-token/GMT.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "./interfaces/IGMT.sol",
+        "../peripherals/interfaces/ITimelockTarget.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "GMT"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\amm\\PancakeRouter.sol": {
+      "lastModificationDate": 1686709095973,
+      "contentHash": "71c63e4aa1740c3ae4c905f4ff6a38ab",
+      "sourceName": "src/contracts/amm/PancakeRouter.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../tokens/Token.sol",
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "./interfaces/IPancakeRouter.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PancakeRouter"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\Token.sol": {
+      "lastModificationDate": 1686662747807,
+      "contentHash": "5a133f7e2b1945fc48bac60b0f4cd797",
+      "sourceName": "src/contracts/tokens/Token.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Token"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\BalanceUpdater.sol": {
+      "lastModificationDate": 1686709594700,
+      "contentHash": "57e60564111376d06534ee8f47f004cb",
+      "sourceName": "src/contracts/peripherals/BalanceUpdater.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../core/interfaces/IVault.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "BalanceUpdater"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gmx\\MigrationHandler.sol": {
+      "lastModificationDate": 1686710289211,
+      "contentHash": "d65b94d616a6e4e5ca02f8e645c3d52c",
+      "sourceName": "src/contracts/gmx/MigrationHandler.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./interfaces/IAmmRouter.sol",
+        "./interfaces/IGmxMigrator.sol",
+        "../core/interfaces/IVault.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "MigrationHandler"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gmx\\interfaces\\IAmmRouter.sol": {
+      "lastModificationDate": 1686671474697,
+      "contentHash": "cc5cfafb20e70e9fa528d5888a0a7ee4",
+      "sourceName": "src/contracts/gmx/interfaces/IAmmRouter.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAmmRouter"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gmx\\interfaces\\IGmxMigrator.sol": {
+      "lastModificationDate": 1686671474685,
+      "contentHash": "9a1db984ff42c816de44399d9d8ff550",
+      "sourceName": "src/contracts/gmx/interfaces/IGmxMigrator.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IGmxMigrator"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gmx\\GmxMigrator.sol": {
+      "lastModificationDate": 1686710289187,
+      "contentHash": "01c1383a0f263469a2e4c4698e607819",
+      "sourceName": "src/contracts/gmx/GmxMigrator.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "./interfaces/IGmxIou.sol",
+        "./interfaces/IAmmRouter.sol",
+        "./interfaces/IGmxMigrator.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "GmxMigrator"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gmx\\interfaces\\IGmxIou.sol": {
+      "lastModificationDate": 1686671474798,
+      "contentHash": "620ccb1fba0c9ed78853ea6d2bcce08e",
+      "sourceName": "src/contracts/gmx/interfaces/IGmxIou.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IGmxIou"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gmx\\GmxIou.sol": {
+      "lastModificationDate": 1686709892896,
+      "contentHash": "e0503f17676a090c15c7a0338f9def39",
+      "sourceName": "src/contracts/gmx/GmxIou.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "./interfaces/IGmxIou.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "GmxIou"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\core\\VaultErrorController.sol": {
+      "lastModificationDate": 1686833506888,
+      "contentHash": "73040a69234459facf312e2abcbfaf6a",
+      "sourceName": "src/contracts/core/VaultErrorController.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IVault.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "VaultErrorController"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gmx\\GMX.sol": {
+      "lastModificationDate": 1686671474717,
+      "contentHash": "d162213dfb2e32808762b7db1fadc943",
+      "sourceName": "src/contracts/gmx/GMX.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../tokens/MintableBaseToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "GMX"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gmx\\GLP.sol": {
+      "lastModificationDate": 1686671474671,
+      "contentHash": "21f6c742ab32cab9adfbeb169e238d6c",
+      "sourceName": "src/contracts/gmx/GLP.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../tokens/MintableBaseToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "GLP"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\gmx\\EsGMX.sol": {
+      "lastModificationDate": 1686671474922,
+      "contentHash": "98f2c3df917e06157522405391c93049",
+      "sourceName": "src/contracts/gmx/EsGMX.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../tokens/MintableBaseToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "EsGMX"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\TimeDistributor.sol": {
+      "lastModificationDate": 1686652324881,
+      "contentHash": "b00a7864260f896adc6df88a6e5f6e51",
+      "sourceName": "src/contracts/tokens/TimeDistributor.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "./interfaces/IDistributor.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TimeDistributor"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\WETH.sol": {
+      "lastModificationDate": 1686662969787,
+      "contentHash": "fa805a5cc067cbd1fb4fb334890dbd22",
+      "sourceName": "src/contracts/tokens/WETH.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "WETH"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\FaucetToken.sol": {
+      "lastModificationDate": 1686662969781,
+      "contentHash": "698da8362013310936d283212b06c999",
+      "sourceName": "src/contracts/tokens/FaucetToken.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "FaucetToken"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\peripherals\\BatchSender.sol": {
+      "lastModificationDate": 1686709594626,
+      "contentHash": "f5e5bdfe32c8d3ea9681a16f29194426",
+      "sourceName": "src/contracts/peripherals/BatchSender.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
+        "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "../access/Governable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "BatchSender"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\amm\\UniFactory.sol": {
+      "lastModificationDate": 1686671474849,
+      "contentHash": "4c9bef116d5d26e337709aae7ead2caa",
+      "sourceName": "src/contracts/amm/UniFactory.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "UniFactory"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\amm\\UniNftManager.sol": {
+      "lastModificationDate": 1686671474905,
+      "contentHash": "75114f8ad3d334b63b9f727cd956d5e7",
+      "sourceName": "src/contracts/amm/UniNftManager.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "UniNftManager"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\amm\\UniPool.sol": {
+      "lastModificationDate": 1686671474771,
+      "contentHash": "4c9b838c2bf0aed9ca898f96669402ba",
+      "sourceName": "src/contracts/amm/UniPool.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "UniPool"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\node_modules\\hardhat\\console.sol": {
+      "lastModificationDate": 1686320675910,
+      "contentHash": "4ff3cd2f6272c9a6516e9ee4f2b967d3",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836383334323133383038"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">= 0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\interfaces\\IBridge.sol": {
+      "lastModificationDate": 1686651935113,
+      "contentHash": "a95c98875edb191ad5e89facb83c40e1",
+      "sourceName": "src/contracts/tokens/interfaces/IBridge.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IBridge"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\tokens\\interfaces\\IGLP.sol": {
+      "lastModificationDate": 1686651935170,
+      "contentHash": "632a8fc3738735caff051bdf1887e79e",
+      "sourceName": "src/contracts/tokens/interfaces/IGLP.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IGLP"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\multi-proxy\\MultiProxy.sol": {
+      "lastModificationDate": 1686914158221,
+      "contentHash": "fb589cd74110a5d9fd17562962e399ce",
+      "sourceName": "src/contracts/multi-proxy/MultiProxy.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "MultiProxy"
+      ]
+    },
+    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\contracts\\multi-proxy\\ProxyTarget.sol": {
+      "lastModificationDate": 1686894002389,
+      "contentHash": "8cb7c2a4a619ea67d7cbce20a6e5ebf1",
+      "sourceName": "src/contracts/multi-proxy/ProxyTarget.sol",
+      "solcConfig": {
+        "version": "0.8.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "3"
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363836393433363039383336"
+            }
+          }
+        },
+        "zksolc": {
+          "version": "1.3.10",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "3"
+            },
+            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
+            "experimental": {}
+          }
+        }
+      },
+      "imports": [
         "./MultiProxy.sol"
       ],
       "versionPragmas": [
@@ -361,106 +6408,6 @@
       ],
       "artifacts": [
         "ProxyTarget"
-      ]
-    },
-    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\interfaces\\ILimitOrder.sol": {
-      "lastModificationDate": 1686390593831,
-      "contentHash": "a138a0e420851309d0e27edd3a8ff244",
-      "sourceName": "src/interfaces/ILimitOrder.sol",
-      "solcConfig": {
-        "version": "0.8.14",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "mode": "3"
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "libraries": {
-            "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363836333936373639333230"
-            }
-          }
-        },
-        "zksolc": {
-          "version": "1.3.10",
-          "compilerSource": "binary",
-          "settings": {
-            "optimizer": {
-              "enabled": true,
-              "mode": "3"
-            },
-            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
-            "experimental": {}
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ILimitOrder"
-      ]
-    },
-    "E:\\Exermon\\OutSource\\Samuel\\ZK-GMX\\zkx-contract\\zk-contract\\src\\interfaces\\IMarketOrder.sol": {
-      "lastModificationDate": 1686390593823,
-      "contentHash": "525031f9bfae13dd8f08c847008a665b",
-      "sourceName": "src/interfaces/IMarketOrder.sol",
-      "solcConfig": {
-        "version": "0.8.14",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "mode": "3"
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "libraries": {
-            "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363836333936373639333230"
-            }
-          }
-        },
-        "zksolc": {
-          "version": "1.3.10",
-          "compilerSource": "binary",
-          "settings": {
-            "optimizer": {
-              "enabled": true,
-              "mode": "3"
-            },
-            "compilerPath": "E:/Exermon/OutSource/Samuel/ZK-GMX/zkx-contract/zksolc-bin-main/windows-amd64/zksolc-windows-amd64-gnu-v1.3.10.exe",
-            "experimental": {}
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IMarketOrder"
       ]
     }
   }

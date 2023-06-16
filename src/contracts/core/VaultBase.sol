@@ -1,6 +1,6 @@
 pragma solidity ^0.8.0;
 
-import "../multiProxy/MultiProxy.sol";
+import "../multi-proxy/MultiProxy.sol";
 import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
 import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "./interfaces/IVaultUtils.sol";
@@ -17,6 +17,11 @@ abstract contract VaultBase {
     uint256 lastIncreasedTime;
   }
 
+  bool public slot1; // 占位
+  bool public slot2;
+  bool public slot3;
+  bool public slot4;
+
   uint256 public constant BASIS_POINTS_DIVISOR = 10000;
   uint256 public constant FUNDING_RATE_PRECISION = 1000000;
   uint256 public constant PRICE_PRECISION = 10 ** 30;
@@ -28,6 +33,7 @@ abstract contract VaultBase {
   uint256 public constant MAX_FUNDING_RATE_FACTOR = 10000; // 1%
 
   bool public isInitialized;
+
   bool public isSwapEnabled = true;
   bool public isLeverageEnabled = true;
 

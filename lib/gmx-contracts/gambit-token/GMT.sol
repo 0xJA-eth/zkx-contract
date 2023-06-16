@@ -2,13 +2,11 @@
 
 pragma solidity 0.6.12;
 
-import "../libraries/math/SafeMath.sol";
-import "../libraries/token/IERC20.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "./interfaces/IGMT.sol";
 import "../peripherals/interfaces/ITimelockTarget.sol";
 
 contract GMT is IERC20, IGMT, ITimelockTarget {
-    using SafeMath for uint256;
 
     string public constant name = "Gambit";
     string public constant symbol = "GMT";

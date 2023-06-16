@@ -55,7 +55,7 @@ abstract contract StdChains {
         string chainAlias;
         // A default RPC endpoint for this chain.
         // NOTE: This default RPC URL is included for convenience to facilitate quick tests and
-        // experimentation. Do not use this RPC URL for production test suites, CI, or other heavy
+        // experimentation. Do not use this RPC URL for production gmx-test suites, CI, or other heavy
         // usage as you will be throttled and this is a disservice to others who need this endpoint.
         string rpcUrl;
     }
@@ -186,7 +186,7 @@ abstract contract StdChains {
 
         initialized = true;
 
-        // If adding an RPC here, make sure to test the default RPC URL in `testRpcs`
+        // If adding an RPC here, make sure to gmx-test the default RPC URL in `testRpcs`
         setChainWithDefaultRpcUrl("anvil", ChainData("Anvil", 31337, "http://127.0.0.1:8545"));
         setChainWithDefaultRpcUrl(
             "mainnet", ChainData("Mainnet", 1, "https://mainnet.infura.io/v3/f4a0bdad42674adab5fc0ac077ffab2b")

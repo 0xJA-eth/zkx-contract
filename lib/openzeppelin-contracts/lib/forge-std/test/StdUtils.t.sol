@@ -4,7 +4,7 @@ pragma solidity >=0.7.0 <0.9.0;
 import "../src/Test.sol";
 
 contract StdUtilsMock is StdUtils {
-    // We deploy a mock version so we can properly test expected reverts.
+    // We deploy a mock version so we can properly gmx-test expected reverts.
     function getTokenBalances_(address token, address[] memory addresses)
         external
         returns (uint256[] memory balances)
@@ -248,7 +248,7 @@ contract StdUtilsForkTest is Test {
     }
 
     function testCannotGetTokenBalances_NonTokenContract() external {
-        // We deploy a mock version so we can properly test the revert.
+        // We deploy a mock version so we can properly gmx-test the revert.
         StdUtilsMock stdUtils = new StdUtilsMock();
 
         // The UniswapV2Factory contract has neither a `balanceOf` function nor a fallback function,

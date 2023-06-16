@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import "../libraries/math/SafeMath.sol";
 
 import "./interfaces/ISecondaryPriceFeed.sol";
 import "./interfaces/IFastPriceFeed.sol";
@@ -12,7 +11,6 @@ import "../access/Governable.sol";
 pragma solidity 0.6.12;
 
 contract FastPriceFeed is ISecondaryPriceFeed, IFastPriceFeed, Governable {
-    using SafeMath for uint256;
 
     // fit data in a uint256 slot to save gas costs
     struct PriceDataItem {

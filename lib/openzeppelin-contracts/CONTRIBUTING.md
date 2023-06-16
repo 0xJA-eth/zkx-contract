@@ -40,7 +40,7 @@ git push origin fix/some-bug-#123
 4) Run tests, linter, etc. This can be done by running local continuous integration and make sure it passes.
 
 ```bash
-npm test
+npm gmx-test
 npm run lint
 ```
 

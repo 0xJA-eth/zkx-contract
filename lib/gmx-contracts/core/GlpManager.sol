@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 
-import "../libraries/math/SafeMath.sol";
-import "../libraries/token/IERC20.sol";
-import "../libraries/token/SafeERC20.sol";
-import "../libraries/utils/ReentrancyGuard.sol";
+import "../../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import "../../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
 
 import "./interfaces/IVault.sol";
 import "./interfaces/IGlpManager.sol";
@@ -15,8 +13,6 @@ import "../access/Governable.sol";
 pragma solidity 0.6.12;
 
 contract GlpManager is ReentrancyGuard, Governable, IGlpManager {
-    using SafeMath for uint256;
-    using SafeERC20 for IERC20;
 
     uint256 public constant PRICE_PRECISION = 10 ** 30;
     uint256 public constant USDG_DECIMALS = 18;
